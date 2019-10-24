@@ -8,21 +8,17 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
-  username: {
+  email: {
     type: String,
     required: true,
     unique: true,
     trim: true,
-    minlength: 3
   },
-  firstName: {},
-  lastName: {},
-  email: {},
-  preferences: {},
-  profileImage: {},
-  country: {},
-  cuisine: {},
-
+  displayName: String,
+  preferences: [String],
+  photoURL: String,
+  country: String,
+  cuisine: String,
 }, {
   timestamps: true,
 });
