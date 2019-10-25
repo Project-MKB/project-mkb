@@ -4,9 +4,7 @@ const firebase = require('../fbConfig')
 const validator = require('validator')
 
 router.route('/').get((req, res) => {
-  User.find()
-    .then(users => res.json(users))
-    .catch(err => res.status(400).json('Error: ' + err));
+  res.status(200).json("test response")
 });
 
 
@@ -25,19 +23,22 @@ router.route('/signup').post(async (req, res) => {
   // validate data
   const error = {}
   if (validator.isEmpty(newUser.email)) {
-    error.email = "Email must not be empty"
+    error.code = "auth/empty-email"
+    error.message = "Email must not be empty."
   } else if (!validator.isEmail(newUser.email)) {
-    error.email = "Email is not formatted correctly"
+    error.code = "auth/invalid-email"
+    error.message = "The email address is badly formatted."
   }
-
   if (validator.isEmpty(newUser.password)) {
-    error.password = "Password must not be empty"
+    error.code = "auth/empty-password"
+    error.message = "Password must not be empty."
   } else if (validator.isEmpty(newUser.confirmPassword)) {
-    error.confirmPassword = "Confirm Password must not be empty"
+    error.code = "auth/empty-confirmPassword"
+    error.message = "Confirm Password must not be empty"
   } else if (newUser.password !== newUser.confirmPassword) {
-    error.password = "Password must match"
+    error.code = "auth/password-not-match"
+    error.message = "Password must match"
   }
-
   if (Object.keys(error).length > 0) {
     return res.status(400).json({ error })
   }
@@ -47,6 +48,7 @@ router.route('/signup').post(async (req, res) => {
   try {
     // create user on Firebase auth
     const data = await firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+    const token = await data.user.getIdToken()
 
     // create user database on MongoDB
     newUser = new User({
@@ -58,11 +60,10 @@ router.route('/signup').post(async (req, res) => {
       country: "",
       cuisine: "",
     })
-
     await newUser.save()
 
     // return ok response when signed up successfully
-    return res.status(200).json(newUser)
+    return res.status(200).json({ ...newUser._doc, token })
 
   } catch (error) {
     // error either firebase signup fail or mongodb create fail
@@ -72,6 +73,11 @@ router.route('/signup').post(async (req, res) => {
 })
 
 
+
+
+
+
+
 router.route('/signin').post(async (req, res) => {
   // get data from client
   let user = {
@@ -79,21 +85,24 @@ router.route('/signin').post(async (req, res) => {
     password: req.body.password
   }
 
+
   // validate data
   const error = {}
   if (validator.isEmpty(user.email)) {
-    error.email = "Email must not be empty"
+    error.code = "auth/empty-email"
+    error.message = "Email must not be empty."
   } else if (!validator.isEmail(user.email)) {
-    error.email = "Email is not formatted correctly"
+    error.code = "auth/invalid-email"
+    error.message = "The email address is badly formatted."
   }
-
   if (validator.isEmpty(user.password)) {
-    error.password = "Password must not be empty"
+    error.code = "auth/empty-password"
+    error.message = "Password must not be empty."
   }
-
   if (Object.keys(error).length > 0) {
     return res.status(400).json({ error })
   }
+
 
   // signin logic
   try {
