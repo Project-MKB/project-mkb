@@ -104,14 +104,17 @@ router.route('/signin').post(async (req, res) => {
   }
 
 
+
   // signin logic
   try {
     // signin user on Firebase auth
     const data = await firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-    console.log(data.user)
+    const token = await data.user.getIdToken()
+
+    user = await User.findOne()
 
     // return ok response when signed up successfully
-    return res.status(200).json(data.user.uid)
+    return res.status(200).json({ ...user._doc, token })
 
   } catch (error) {
     // error either firebase signin fail or mongodb create fail

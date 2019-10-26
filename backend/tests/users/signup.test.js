@@ -1,94 +1,117 @@
-// check out this website for refactoring
-// https://zellwk.com/blog/jest-and-mongoose/
+/* 
+  # Signup test
+  1. should signup successfully
+  2. should throw error when email is empty
+  3. should throw error when password is empty
+  4. should throw error when email is invalid
+  5. should throw error when password don't match
+  6. should throw error when password is less than 6
+  7. should throw error when email already exists
+*/
 
-const app = require('../../app')
-const request = require('supertest')(app)
-const mongoose = require('mongoose')
-const databaseName = 'signup-test'
-const admin = require('firebase-admin')
-const serviceAccount = require("../../project-mkb-firebase-adminsdk-uia11-70097d3253.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-})
-
-
-// connect mongodb before running test suite
-beforeAll(async () => {
-  await mongoose.connect(`mongodb+srv://${process.env.ATLAS_CRED}@cluster0-we6pg.mongodb.net/${databaseName}?retryWrites=true&w=majority`, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-  })
-})
-
-// clean up database between each test
-afterEach(async () => {
-  await removeAllCollections()
-})
-
-afterAll(async () => {
-  await dropAllCollections()
-  await mongoose.connection.close()
-})
-
+const { setupDB, request, fbAdmin } = require('../test-setup')
+setupDB('signup-test')
 
 describe('Sign up test', () => {
+  const signup = async user => {
+    return await request.post('/users/signup').send({
+      email: user.email,
+      password: user.password,
+      confirmPassword: user.confirmPassword
+    })
+  }
+
   test('Should signup successfully', async done => {
-    const email = 'test@test.com'
-    const res = await request.post('/users/signup').send({
-      email,
+    const res = await signup({
+      email: 'test@test.com',
       password: 'test123',
       confirmPassword: 'test123'
     })
 
     const newUser = res.body
-    expect(newUser.email).toBe(email)
+    expect(newUser.email).toBe('test@test.com')
     expect(newUser.uid).toBeTruthy()
     expect(newUser.token).toBeTruthy()
 
     // delete user that was just created for test
     const uid = newUser.uid
-    await admin.auth().deleteUser(uid)
+    await fbAdmin.auth().deleteUser(uid)
     done()
   })
 
-  test('Should throw error - empty email', async done => {
-    const email = ''
-    const res = await request.post('/users/signup').send({
-      email,
+  test('should throw error when email is empty', async done => {
+    const res = await signup({
+      email: '',
       password: 'test123',
       confirmPassword: 'test123'
     })
 
-    const error = res.body.error
-    expect(error.code).toBe("auth/empty-email")
+    expect(res.body.error.code).toBe("auth/empty-email")
+    done()
+  })
 
+  test('should throw error when password is empty', async done => {
+    const res = await signup({
+      email: 'test@test.com',
+      password: '',
+      confirmPassword: ''
+    })
+
+    expect(res.body.error.code).toBe('auth/empty-password')
+    done()
+  })
+
+  test('should throw error when email is invalid', async done => {
+    const res = await signup({
+      email: 'test',
+      password: 'test123',
+      confirmPassword: 'test123'
+    })
+
+    expect(res.body.error.code).toBe('auth/invalid-email')
+    done()
+  })
+
+  test("should throw error when password don't match", async done => {
+    const res = await signup({
+      email: 'test@test.com',
+      password: 'test123',
+      confirmPassword: 'test1234'
+    })
+
+    expect(res.body.error.code).toBe('auth/password-not-match')
+    done()
+  })
+
+  test('should throw error when password is less than 6', async done => {
+    const res = await signup({
+      email: 'test@test.com',
+      password: 'test1',
+      confirmPassword: 'test1'
+    })
+
+    expect(res.body.error.code).toBe('auth/weak-password')
+    done()
+  })
+
+  test('should throw error when email already exists', async done => {
+    const r = await signup({
+      email: 'test@test.com',
+      password: 'test123',
+      confirmPassword: 'test123'
+    })
+    const res = await signup({
+      email: 'test@test.com',
+      password: 'test123',
+      confirmPassword: 'test123'
+    })
+
+    // delete user that was just created for test
+    await fbAdmin.auth().deleteUser(r.body.uid)
+
+    expect(res.body.error.code).toBe('auth/email-already-in-use')
     done()
   })
 })
 
 
-
-async function removeAllCollections() {
-  const collections = Object.keys(mongoose.connection.collections)
-  for (const collectionName of collections) {
-    const collection = mongoose.connection.collections[collectionName]
-    try {
-      await collection.deleteMany()
-    } catch (error) {
-      console.error(error)
-    }
-  }
-}
-
-async function dropAllCollections() {
-  const collections = Object.keys(mongoose.connection.collections)
-  for (const collectionName of collections) {
-    const collection = mongoose.connection.collections[collectionName]
-    try {
-      await collection.drop()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-}
