@@ -30,7 +30,7 @@ describe('Sign in test', () => {
 
   beforeAll(async () => {
     const r = await signup({
-      email: 'test@test.com',
+      email: 'test99@test.com',
       password: 'test123',
       confirmPassword: 'test123'
     })
@@ -44,12 +44,12 @@ describe('Sign in test', () => {
 
   test('Should signin successfully', async done => {
     const res = await signin({
-      email: 'test@test.com',
+      email: 'test99@test.com',
       password: 'test123'
     })
 
     const user = res.body
-    expect(user.email).toBe('test@test.com')
+    expect(user.email).toBe('test99@test.com')
     expect(user.uid).toBeTruthy()
     expect(user.token).toBeTruthy()
 
@@ -68,7 +68,7 @@ describe('Sign in test', () => {
 
   test('should throw error when password is empty', async done => {
     const res = await signin({
-      email: 'test@test.com',
+      email: 'test99@test.com',
       password: '',
     })
 
@@ -98,7 +98,7 @@ describe('Sign in test', () => {
 
   test('should throw error when password is wrong', async done => {
     const res = await signin({
-      email: 'test@test.com',
+      email: 'test99@test.com',
       password: 'wrong-password',
     })
 

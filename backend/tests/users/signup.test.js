@@ -23,13 +23,13 @@ describe('Sign up test', () => {
 
   test('Should signup successfully', async done => {
     const res = await signup({
-      email: 'test@test.com',
+      email: 'test99@test.com',
       password: 'test123',
       confirmPassword: 'test123'
     })
 
     const newUser = res.body
-    expect(newUser.email).toBe('test@test.com')
+    expect(newUser.email).toBe('test99@test.com')
     expect(newUser.uid).toBeTruthy()
     expect(newUser.token).toBeTruthy()
 
@@ -52,7 +52,7 @@ describe('Sign up test', () => {
 
   test('should throw error when password is empty', async done => {
     const res = await signup({
-      email: 'test@test.com',
+      email: 'test99@test.com',
       password: '',
       confirmPassword: ''
     })
@@ -74,7 +74,7 @@ describe('Sign up test', () => {
 
   test("should throw error when password don't match", async done => {
     const res = await signup({
-      email: 'test@test.com',
+      email: 'test99@test.com',
       password: 'test123',
       confirmPassword: 'test1234'
     })
@@ -85,7 +85,7 @@ describe('Sign up test', () => {
 
   test('should throw error when password is less than 6', async done => {
     const res = await signup({
-      email: 'test@test.com',
+      email: 'test99@test.com',
       password: 'test1',
       confirmPassword: 'test1'
     })
@@ -96,12 +96,12 @@ describe('Sign up test', () => {
 
   test('should throw error when email already exists', async done => {
     const r = await signup({
-      email: 'test@test.com',
+      email: 'test99@test.com',
       password: 'test123',
       confirmPassword: 'test123'
     })
     const res = await signup({
-      email: 'test@test.com',
+      email: 'test99@test.com',
       password: 'test123',
       confirmPassword: 'test123'
     })
