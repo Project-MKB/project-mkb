@@ -1,8 +1,11 @@
 const router = require('express').Router();
 const User = require('../models/user.model');
-const firebase = require('../fbConfig')
-const validator = require('validator')
-const fbAdmin = require('../fbAdminConfig')
+const firebase = require('../util/fbConfig')
+const { validateSignupData, validateSigninData } = require('../util/validators')
+const fbAdmin = require('../util/fbAdminConfig')
+const fbAuth = require('../util/fbAuth')
+
+
 
 router.route('/').get((req, res) => {
   res.status(200).json("test response")
@@ -12,7 +15,7 @@ router.route('/').get((req, res) => {
 
 
 
-router.route('/signup').post(async (req, res) => {
+router.post('/signup', async (req, res) => {
   // get data from client
   let newUser = {
     email: req.body.email,
@@ -20,30 +23,11 @@ router.route('/signup').post(async (req, res) => {
     confirmPassword: req.body.confirmPassword
   }
 
-
   // validate data
-  const error = {}
-  if (validator.isEmpty(newUser.email)) {
-    error.code = "auth/empty-email"
-    error.message = "Email must not be empty."
-  } else if (!validator.isEmail(newUser.email)) {
-    error.code = "auth/invalid-email"
-    error.message = "The email address is badly formatted."
-  }
-  if (validator.isEmpty(newUser.password)) {
-    error.code = "auth/empty-password"
-    error.message = "Password must not be empty."
-  } else if (validator.isEmpty(newUser.confirmPassword)) {
-    error.code = "auth/empty-confirmPassword"
-    error.message = "Confirm Password must not be empty"
-  } else if (newUser.password !== newUser.confirmPassword) {
-    error.code = "auth/password-not-match"
-    error.message = "Password must match"
-  }
-  if (Object.keys(error).length > 0) {
+  const { error, valid } = validateSignupData(newUser)
+  if (!valid) {
     return res.status(400).json({ error })
   }
-
 
   // signup logic
   try {
@@ -79,32 +63,18 @@ router.route('/signup').post(async (req, res) => {
 
 
 
-router.route('/signin').post(async (req, res) => {
+router.post('/signin', async (req, res) => {
   // get data from client
   let user = {
     email: req.body.email,
     password: req.body.password
   }
 
-
   // validate data
-  const error = {}
-  if (validator.isEmpty(user.email)) {
-    error.code = "auth/empty-email"
-    error.message = "Email must not be empty."
-  } else if (!validator.isEmail(user.email)) {
-    error.code = "auth/invalid-email"
-    error.message = "The email address is badly formatted."
-  }
-  if (validator.isEmpty(user.password)) {
-    error.code = "auth/empty-password"
-    error.message = "Password must not be empty."
-  }
-  if (Object.keys(error).length > 0) {
+  const { error, valid } = validateSigninData(user)
+  if (!valid) {
     return res.status(400).json({ error })
   }
-
-
 
   // signin logic
   try {
@@ -112,13 +82,13 @@ router.route('/signin').post(async (req, res) => {
     const data = await firebase.auth().signInWithEmailAndPassword(user.email, user.password)
     const token = await data.user.getIdToken()
 
-    user = await User.findOne()
+    user = await User.findOne({ uid: data.user.uid })
 
     // return ok response when signed up successfully
     return res.status(200).json({ ...user._doc, token })
 
   } catch (error) {
-    // error either firebase signin fail or mongodb create fail
+    // error either firebase signin fail or mongodb find fail
     console.error(error)
     return res.status(400).json({ error })
   }
@@ -130,68 +100,34 @@ router.route('/signin').post(async (req, res) => {
 
 
 
-
-router.route('/update').post(async (req, res) => {
-  // get data from client
-  let user = {
-    uid: req.body.uid,
-    email: req.body.email,
-    displayName: req.body.displayName,
-    photoURL: req.body.photoURL,
-    preferences: req.body.preferences,
-    country: req.body.country,
-    cuisine: req.body.cuisine,
-    // token: req.body.token,
-  }
-
-
-  // validate data
-  const error = {}
+router.post('/update', fbAuth, async (req, res) => {
   try {
-    const token = await firebase.auth().getIdToken(user.uid)
-    const decodedToken = await fbAdmin.auth().verifyIdToken(token)
-    console.log({ token, decodedToken })
-    return res.json({ token, decodedToken })
+    const user = await User.findOneAndUpdate(
+      { uid: req.user.uid },
+      {
+        displayName: req.body.displayName,
+        photoURL: req.body.photoURL,
+        preferences: req.body.preferences,
+        country: req.body.country,
+        cuisine: req.body.cuisine,
+      },
+      { useFindAndModify: false },
+      async () => {
+        return await User.findOne({ uid: req.user.uid })
+      }
+    )
+
+
+    // return ok response when updated successfully
+    return res.status(200).json(user)
+
   } catch (error) {
     console.error(error)
     return res.status(400).json({ error })
   }
-
-
-  // if (validator.isEmpty(user.email)) {
-  //   error.code = "auth/empty-email"
-  //   error.message = "Email must not be empty."
-  // } else if (!validator.isEmail(user.email)) {
-  //   error.code = "auth/invalid-email"
-  //   error.message = "The email address is badly formatted."
-  // }
-  // if (validator.isEmpty(user.password)) {
-  //   error.code = "auth/empty-password"
-  //   error.message = "Password must not be empty."
-  // }
-  // if (Object.keys(error).length > 0) {
-  //   return res.status(400).json({ error })
-  // }
-
-
-
-  // // signin logic
-  // try {
-  //   // signin user on Firebase auth
-  //   const data = await firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-  //   const token = await data.user.getIdToken()
-
-  //   user = await User.findOne()
-
-  //   // return ok response when signed up successfully
-  //   return res.status(200).json({ ...user._doc, token })
-
-  // } catch (error) {
-  //   // error either firebase signin fail or mongodb create fail
-  //   console.error(error)
-  //   return res.status(400).json({ error })
-  // }
 })
+
+
 
 
 

@@ -1,7 +1,8 @@
 const app = require('../app')
 const request = require('supertest')(app)
 const mongoose = require('mongoose')
-const fbAdmin = require('../fbAdminConfig')
+const fbAdmin = require('../util/fbAdminConfig')
+const fb = require('../util/fbConfig')
 
 
 async function removeAllCollections() {
@@ -53,5 +54,5 @@ module.exports = {
       await mongoose.connection.close()
     })
   },
-  request, fbAdmin
+  request, fbAdmin, fb
 }
