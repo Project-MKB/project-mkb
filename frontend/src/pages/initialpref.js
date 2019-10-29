@@ -1,11 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class InitialPref extends Component {
-    render(){
-        return(
-            <h1>This is the Initial Preferences page</h1>
-        );
-    }
-}
+const InitialPref = () => <h1>This is the Initial Preferences page</h1>;
 
 export default InitialPref;

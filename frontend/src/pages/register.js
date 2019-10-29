@@ -1,11 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Register extends Component {
-    render(){
-        return(
-            <h1>This is the Register page</h1>
-        );
-    }
-}
+const Register = () => <h1>This is the Register page</h1>;
 
 export default Register;

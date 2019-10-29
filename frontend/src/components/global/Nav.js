@@ -25,7 +25,7 @@ class Nav extends Component {
                                 <Link className="nav-link" to="/login">Log In</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/register">Sign Up</Link>
+                                <Link className="nav-link" to="/register">Register</Link>
                             </li>
                         </ul>
                     </div>
