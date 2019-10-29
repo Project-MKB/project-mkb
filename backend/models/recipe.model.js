@@ -3,23 +3,22 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const recipeSchema = new Schema({
-  id: {},
   title: { type: String, required: true },
-  ingredients: {}, // array
-  directions: {}, // array
-  prepTime: {}, // number
-  cookTime: {}, // number
-  totalTime: {}, // number
-  servingSize: {}, // number
-  category: {}, // dessert, appet
-  cuisine: {}, // mexican, korean ..
-  footNote: {},
-  rating: {},
-  difficulty: {},
-  mainImage: {}, // array
-  images: {},
-  tags: {}, // array
-  uid: {},
+  ingredients: [String], // array
+  directions: [String], // array
+  prepTime: Number, // number
+  cookTime: Number, // number
+  totalTime: Number, // number
+  servingSize: Number, // number
+  category: String, // dessert, appet
+  cuisine: String, // mexican, korean ..
+  footNote: [String],
+  rating: Number,
+  difficulty: Number,
+  mainImage: String,
+  images: [String], // array
+  tags: [String], // array
+  uid: String,
 
 }, {
   timestamps: true,

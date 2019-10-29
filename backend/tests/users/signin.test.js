@@ -9,9 +9,27 @@
 */
 
 const { setupDB, request, fbAdmin } = require('../test-setup')
+const { getToken, signup, deleteUser } = require('../auth-setup')
 setupDB('signin-test')
 
 describe('Sign in test', () => {
+  let testUid = ""
+  beforeAll(async () => {
+    testUid = await signup()
+  })
+  afterAll(() => deleteUser(testUid))
+
+
+  const signin = async user => {
+    return await request.post('/users/signin').send({
+      email: user.email,
+      password: user.password
+    })
+  }
+
+
+
+
   test('Should signin successfully', async done => {
     const res = await signin({
       email: 'test99@test.com',
@@ -77,37 +95,6 @@ describe('Sign in test', () => {
   })
 
 
-
-
-
-
-
-  const signup = async user => {
-    return await request.post('/users/signup').send({
-      email: user.email,
-      password: user.password,
-      confirmPassword: user.confirmPassword
-    })
-  }
-  const signin = async user => {
-    return await request.post('/users/signin').send({
-      email: user.email,
-      password: user.password
-    })
-  }
-
-  let testUid = ""
-  beforeAll(async () => {
-    const r = await signup({
-      email: 'test99@test.com',
-      password: 'test123',
-      confirmPassword: 'test123'
-    })
-    testUid = r.body.uid
-  })
-  afterAll(async () => {
-    await fbAdmin.auth().deleteUser(testUid)
-  })
 })
 
 

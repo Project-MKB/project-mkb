@@ -7,14 +7,16 @@ const fbAuth = require('../util/fbAuth')
 
 
 
-router.route('/').get((req, res) => {
-  res.status(200).json("test response")
+// get authenticated user
+router.get('/', fbAuth, async (req, res) => {
+  const user = await User.findOne({ uid: req.user.uid })
+  res.status(200).json(user)
 });
 
 
 
 
-
+// signup user
 router.post('/signup', async (req, res) => {
   // get data from client
   let newUser = {
@@ -62,7 +64,7 @@ router.post('/signup', async (req, res) => {
 
 
 
-
+// signin user
 router.post('/signin', async (req, res) => {
   // get data from client
   let user = {
@@ -99,7 +101,7 @@ router.post('/signin', async (req, res) => {
 
 
 
-
+// update user data
 router.post('/update', fbAuth, async (req, res) => {
   try {
     const user = await User.findOneAndUpdate(
