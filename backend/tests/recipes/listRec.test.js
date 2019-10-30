@@ -1,6 +1,6 @@
 /* 
-  # create recipe test
-  1. should create recipe successfully
+  # get recommended recipe test
+  1. should return recipes that match user preferences
   2. should throw error when token is invalid (auth/argument-error)
   3. should throw error when data type is wrong
   4. should throw error when required data is empty
@@ -8,9 +8,10 @@
 
 const { setupDB, request, fbAdmin, fb } = require('../test-setup')
 const { getToken, signup, deleteUser } = require('../auth-setup')
+const { calRecRecipes } = require('../../routes/recipes')
 setupDB('recipe-test')
 
-describe('Create recipe test', () => {
+describe('List recommended recipes test', () => {
   let testUid = ""
   beforeAll(async () => {
     testUid = await signup()
@@ -23,12 +24,17 @@ describe('Create recipe test', () => {
       .set('Authorization', 'Bearer ' + token)
   }
 
+  const listRec = async (token) => {
+    return await request.get('/recipes/listRecs')
+      .set('Authorization', 'Bearer ' + token)
+  }
 
 
 
-  test('Should create recipe successfully', async done => {
+
+  test('Should return recipes that match user preferences', async done => {
     const token = await getToken()
-    const res = await create({
+    await create({
       title: "The Best Shrimp Alfredo",
       ingredients: [
         "shrimp",
@@ -63,7 +69,10 @@ describe('Create recipe test', () => {
       ]
     }, token)
 
-    const recipe = res.body
+    const res = await listRec(token)
+
+
+    const recipe = res.body[0]
     expect(recipe.title).toBe('The Best Shrimp Alfredo')
     expect(recipe.totalTime).toBe(25)
     expect(recipe.ingredients).toEqual([
@@ -84,6 +93,29 @@ describe('Create recipe test', () => {
     ])
 
     done()
+  })
+
+
+  // business logic test
+  test("Should return correct array for recommendation", () => {
+    const userPref = ['3', '9', '6']
+    const allRecipes = [];
+    for (let i = 0; i < 100; i++) {
+      const length = Math.floor(Math.random() * 10);
+      const tags = [];
+      for (let j = 0; j < length; j++) {
+        const randomNumber = Math.floor(Math.random() * 10 + 1).toString();
+        tags.push(randomNumber);
+      }
+      const setTags = new Set(tags)
+      allRecipes.push({ tags: [...setTags] });
+    }
+
+    const recRecipes = calRecRecipes(userPref, allRecipes)
+    console.log(recRecipes)
+    recRecipes.forEach(recipe => {
+      expect(recipe.tags).toEqual(expect.arrayContaining(userPref))
+    })
   })
 
 

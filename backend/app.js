@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-const recipesRouter = require('./routes/recipes')
+const recipesRouter = require('./routes/recipes').router
 const usersRouter = require('./routes/users')
 
 app.use('/recipes', recipesRouter)

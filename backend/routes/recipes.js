@@ -5,7 +5,7 @@ const fbAuth = require('../util/fbAuth')
 
 
 // get recommended recipes
-router.get('/', fbAuth, async (req, res) => {
+router.get('/listRecs', fbAuth, async (req, res) => {
   // get user data
   const user = await User.findOne({ uid: req.user.uid })
 
@@ -13,19 +13,18 @@ router.get('/', fbAuth, async (req, res) => {
   try {
 
     //================================================
-    /* Brain storming! 
+    /* TODO: Brain storming! 
     please give me an idea to implement this efficiently
-    to show recommended recipes to the user */
+    to show recommended recipes to the user
+    currently it's returning recipes that includes all of user preference tags
+    */
 
     // get all recipes from the DB
-    let recipes = await Recipe.find()
+    let allRecipes = await Recipe.find()
+      .select('title cuisine tags rating')
     // show all recipes that the tag includes all of user preferences
-    recipes = recipes.filter(recipe => {
-      return user.preferences.every(p => recipe.tags.includes(p))
-    })
+    recipes = calRecRecipes(user.preferences, allRecipes)
     //================================================
-
-
 
     return res.status(200).json(recipes)
   } catch (error) {
@@ -33,6 +32,17 @@ router.get('/', fbAuth, async (req, res) => {
     return res.status(500).json({ error })
   }
 });
+
+
+const calRecRecipes = (userPref, allRecipes) => {
+  // get list of recipes that matches userPref
+  return allRecipes.filter(recipe => {
+    return userPref.every(p => recipe.tags.includes(p))
+  })
+}
+
+
+
 
 
 
@@ -58,4 +68,12 @@ router.post('/add', fbAuth, async (req, res) => {
 
 
 
-module.exports = router;
+
+
+
+// get one recipe by id
+
+
+module.exports = {
+  router, calRecRecipes
+};

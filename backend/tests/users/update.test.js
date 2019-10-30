@@ -52,17 +52,6 @@ describe('Update user info test', () => {
     done()
   })
 
-  // test('should throw error when email is empty', async done => {
-  //   const res = await signup({
-  //     email: '',
-  //     password: 'test123',
-  //     confirmPassword: 'test123'
-  //   })
-
-  //   expect(res.body.error.code).toBe("auth/empty-email")
-  //   done()
-  // })
-
 
 })
 
