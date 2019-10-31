@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 
 export class Login extends Component {
 
@@ -7,14 +8,16 @@ export class Login extends Component {
     password: "",
   }
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value
     })
   }
 
-  handleSubmit = e => {
+  handleSubmit = async (e) => {
     e.preventDefault()
+
+    await axios.get('/users/signin')
 
     console.log('user logged in')
   }
