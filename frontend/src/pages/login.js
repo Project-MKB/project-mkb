@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import { connect } from "react-redux";
+import { loginUser } from "../redux/actions/userActions";
+
 
 export class Login extends Component {
 
@@ -16,14 +18,12 @@ export class Login extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault()
-
-    await axios.get('/users/signin')
-
-    console.log('user logged in')
+    this.props.loginUser(this.state)
   }
 
-
   render() {
+    const { user } = this.props
+
     return (
       <div className="container">
         <div className="row">
@@ -53,7 +53,15 @@ export class Login extends Component {
                   id="password"
                   placeholder="Password" />
               </div>
-              <button type="submit" className="btn btn-primary">Submit</button>
+              <button
+                disabled={user.isLoading}
+                type="submit"
+                className="btn btn-primary">
+                {user.isLoading ?
+                  <div className="spinner-border text-success" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div> : 'Submit'}
+              </button>
             </form>
           </div>
           <div className="col"></div>
@@ -64,4 +72,13 @@ export class Login extends Component {
   }
 }
 
-export default Login
+
+const mapStateToProps = (state) => ({
+  user: state.user
+})
+
+const mapActionsToProps = {
+  loginUser
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(Login)
