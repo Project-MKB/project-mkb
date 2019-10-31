@@ -1,3 +1,13 @@
+# Backend Schedule Breakdown
+4 weeks left
+
+Week 3 : Complete CRUD for recipes
+Week 4 : Work on additional APIs
+Week 5 : Test backend APIs from frontend UI and bug fix
+Week 6 : Test backend APIs from frontend UI and bug fix
+
+
+
 # API Documentation
 
 # Users
