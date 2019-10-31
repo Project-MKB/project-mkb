@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { 
+import {
   BrowserRouter as Router,
   Route,
   Switch
@@ -12,21 +12,26 @@ import InitialPref from "./pages/initialpref";
 import Main from "./pages/main";
 import Details from "./pages/details";
 import PageNotFound from "./pages/404";
+// Redux
+import { Provider } from "react-redux";
+import store from './redux/store'
 
 class App extends Component {
-  render(){
+  render() {
     return (
-      <Router>
-        <Switch>
-          <Route exact path='/' component={ Landing } />
-          <Route exact path='/register' component={ Register } />
-          <Route exact path='/login' component={ Login } />
-          <Route exact path='/onboarding' component={ InitialPref } />
-          <Route exact path='/main' component={ Main } />
-          <Route exact path='/details' component={ Details } />
-          <Route path='/' component={ PageNotFound } />
-        </Switch>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Switch>
+            <Route exact path='/' component={Landing} />
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/onboarding' component={InitialPref} />
+            <Route exact path='/main' component={Main} />
+            <Route exact path='/details' component={Details} />
+            <Route path='/' component={PageNotFound} />
+          </Switch>
+        </Router>
+      </Provider>
     );
   }
 }

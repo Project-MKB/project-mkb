@@ -12,4 +12,9 @@
 - create AuthRoute/UnauthRoute and apply to routes
 
 ## Redux
-- 
+- create store.js, reducers/actions folders
+- store: combine reducers > create store with reducers, initialState, compose(applyMiddleware(thunk), redux devtool extension)
+- Wrap app with `<Provider store={store}>`
+- create actions
+- create reducer
+- connect store on components and map state/actions
