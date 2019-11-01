@@ -1,21 +1,15 @@
-const router = require('express').Router();
-const User = require('../models/user.model');
-const firebase = require('../util/fbConfig')
-const { validateSignupData, validateSigninData } = require('../util/validators')
-const fbAdmin = require('../util/fbAdminConfig')
-const fbAuth = require('../util/fbAuth')
+const router = require("express").Router()
+const User = require("../models/user.model")
+const firebase = require("../util/fbConfig")
+const { validateSignupData, validateSigninData } = require("../util/validators")
+const fbAdmin = require("../util/fbAdminConfig")
+const fbAuth = require("../util/fbAuth")
 
-
-
-router.route('/').get((req, res) => {
+router.route("/").get((req, res) => {
   res.status(200).json("test response")
-});
+})
 
-
-
-
-
-router.post('/signup', async (req, res) => {
+router.post("/signup", async (req, res) => {
   // get data from client
   let newUser = {
     email: req.body.email,
@@ -32,7 +26,9 @@ router.post('/signup', async (req, res) => {
   // signup logic
   try {
     // create user on Firebase auth
-    const data = await firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+    const data = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(newUser.email, newUser.password)
     const token = await data.user.getIdToken()
 
     // create user database on MongoDB
@@ -43,13 +39,12 @@ router.post('/signup', async (req, res) => {
       preferences: [],
       photoURL: data.user.photoURL || "",
       country: "",
-      cuisine: "",
+      cuisine: ""
     })
     await newUser.save()
 
     // return ok response when signed up successfully
     return res.status(200).json({ ...newUser._doc, token })
-
   } catch (error) {
     // error either firebase signup fail or mongodb create fail
     console.error(error)
@@ -57,13 +52,7 @@ router.post('/signup', async (req, res) => {
   }
 })
 
-
-
-
-
-
-
-router.post('/signin', async (req, res) => {
+router.post("/signin", async (req, res) => {
   // get data from client
   let user = {
     email: req.body.email,
@@ -79,14 +68,15 @@ router.post('/signin', async (req, res) => {
   // signin logic
   try {
     // signin user on Firebase auth
-    const data = await firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+    const data = await firebase
+      .auth()
+      .signInWithEmailAndPassword(user.email, user.password)
     const token = await data.user.getIdToken()
 
     user = await User.findOne({ uid: data.user.uid })
 
     // return ok response when signed up successfully
     return res.status(200).json({ ...user._doc, token })
-
   } catch (error) {
     // error either firebase signin fail or mongodb find fail
     console.error(error)
@@ -94,13 +84,7 @@ router.post('/signin', async (req, res) => {
   }
 })
 
-
-
-
-
-
-
-router.post('/update', fbAuth, async (req, res) => {
+router.post("/update", fbAuth, async (req, res) => {
   try {
     const user = await User.findOneAndUpdate(
       { uid: req.user.uid },
@@ -109,7 +93,7 @@ router.post('/update', fbAuth, async (req, res) => {
         photoURL: req.body.photoURL,
         preferences: req.body.preferences,
         country: req.body.country,
-        cuisine: req.body.cuisine,
+        cuisine: req.body.cuisine
       },
       { useFindAndModify: false },
       async () => {
@@ -117,18 +101,12 @@ router.post('/update', fbAuth, async (req, res) => {
       }
     )
 
-
     // return ok response when updated successfully
     return res.status(200).json(user)
-
   } catch (error) {
     console.error(error)
     return res.status(400).json({ error })
   }
 })
 
-
-
-
-
-module.exports = router;
+module.exports = router

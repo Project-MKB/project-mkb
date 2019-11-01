@@ -1,22 +1,23 @@
-const router = require('express').Router();
-const Recipe = require('../models/recipe.model');
+const router = require("express").Router()
+const Recipe = require("../models/recipe.model")
 
-router.route('/').get((req, res) => {
+router.route("/").get((req, res) => {
   Recipe.find()
     .then(recipes => res.json(recipes))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
+    .catch(err => res.status(400).json("Error: " + err))
+})
 
-router.route('/add').post((req, res) => {
+router.route("/add").post((req, res) => {
   const title = req.body.title
 
   const newRecipe = new Recipe({
-    title,
-  });
+    title
+  })
 
-  newRecipe.save()
-    .then(() => res.json('Recipe added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
-});
+  newRecipe
+    .save()
+    .then(() => res.json("Recipe added!"))
+    .catch(err => res.status(400).json("Error: " + err))
+})
 
-module.exports = router;
+module.exports = router

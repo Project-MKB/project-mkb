@@ -1,9 +1,8 @@
-const app = require('../app')
-const request = require('supertest')(app)
-const mongoose = require('mongoose')
-const fbAdmin = require('../util/fbAdminConfig')
-const fb = require('../util/fbConfig')
-
+const app = require("../app")
+const request = require("supertest")(app)
+const mongoose = require("mongoose")
+const fbAdmin = require("../util/fbAdminConfig")
+const fb = require("../util/fbConfig")
 
 async function removeAllCollections() {
   const collections = Object.keys(mongoose.connection.collections)
@@ -24,23 +23,24 @@ async function dropAllCollections() {
     try {
       await collection.drop()
     } catch (error) {
-      if (error.message === 'ns not found') return
+      if (error.message === "ns not found") return
       console.log(error)
     }
   }
 }
 
-
-
 module.exports = {
   setupDB(databaseName) {
     // connect database before running test suite
     beforeAll(async () => {
-      await mongoose.connect(`mongodb+srv://${process.env.ATLAS_CRED}@cluster0-we6pg.mongodb.net/${databaseName}?retryWrites=true&w=majority`, {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true
-      })
+      await mongoose.connect(
+        `mongodb+srv://${process.env.ATLAS_CRED}@cluster0-we6pg.mongodb.net/${databaseName}?retryWrites=true&w=majority`,
+        {
+          useNewUrlParser: true,
+          useCreateIndex: true,
+          useUnifiedTopology: true
+        }
+      )
     })
 
     // clean up database between each test
@@ -54,5 +54,7 @@ module.exports = {
       await mongoose.connection.close()
     })
   },
-  request, fbAdmin, fb
+  request,
+  fbAdmin,
+  fb
 }

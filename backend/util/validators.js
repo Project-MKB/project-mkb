@@ -1,4 +1,4 @@
-const validator = require('validator')
+const validator = require("validator")
 
 exports.validateSignupData = newUser => {
   const error = {}
@@ -25,8 +25,6 @@ exports.validateSignupData = newUser => {
     valid: Object.keys(error).length === 0 ? true : false
   }
 }
-
-
 
 exports.validateSigninData = user => {
   const error = {}

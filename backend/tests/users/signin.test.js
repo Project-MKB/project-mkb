@@ -8,89 +8,83 @@
   6. should throw error when password is wrong
 */
 
-const { setupDB, request, fbAdmin } = require('../test-setup')
-setupDB('signin-test')
+const { setupDB, request, fbAdmin } = require("../test-setup")
+setupDB("signin-test")
 
-describe('Sign in test', () => {
-  test('Should signin successfully', async done => {
+describe("Sign in test", () => {
+  test("Should signin successfully", async done => {
     const res = await signin({
-      email: 'test99@test.com',
-      password: 'test123'
+      email: "test99@test.com",
+      password: "test123"
     })
 
     const user = res.body
-    expect(user.email).toBe('test99@test.com')
+    expect(user.email).toBe("test99@test.com")
     expect(user.uid).toBeTruthy()
     expect(user.token).toBeTruthy()
 
     done()
   })
 
-  test('should throw error when email is empty', async done => {
+  test("should throw error when email is empty", async done => {
     const res = await signin({
-      email: '',
-      password: 'test123',
+      email: "",
+      password: "test123"
     })
 
     expect(res.body.error.code).toBe("auth/empty-email")
     done()
   })
 
-  test('should throw error when password is empty', async done => {
+  test("should throw error when password is empty", async done => {
     const res = await signin({
-      email: 'test99@test.com',
-      password: '',
+      email: "test99@test.com",
+      password: ""
     })
 
-    expect(res.body.error.code).toBe('auth/empty-password')
+    expect(res.body.error.code).toBe("auth/empty-password")
     done()
   })
 
-  test('should throw error when email is invalid', async done => {
+  test("should throw error when email is invalid", async done => {
     const res = await signin({
-      email: 'test',
-      password: 'test123',
+      email: "test",
+      password: "test123"
     })
 
-    expect(res.body.error.code).toBe('auth/invalid-email')
+    expect(res.body.error.code).toBe("auth/invalid-email")
     done()
   })
 
   test("should throw error when no user is found", async done => {
     const res = await signin({
-      email: 'no-user-test@test.com',
-      password: 'test123',
+      email: "no-user-test@test.com",
+      password: "test123"
     })
 
-    expect(res.body.error.code).toBe('auth/user-not-found')
+    expect(res.body.error.code).toBe("auth/user-not-found")
     done()
   })
 
-  test('should throw error when password is wrong', async done => {
+  test("should throw error when password is wrong", async done => {
     const res = await signin({
-      email: 'test99@test.com',
-      password: 'wrong-password',
+      email: "test99@test.com",
+      password: "wrong-password"
     })
 
-    expect(res.body.error.code).toBe('auth/wrong-password')
+    expect(res.body.error.code).toBe("auth/wrong-password")
     done()
   })
-
-
-
-
-
-
 
   const signup = async user => {
-    return await request.post('/users/signup').send({
+    return await request.post("/users/signup").send({
       email: user.email,
       password: user.password,
       confirmPassword: user.confirmPassword
     })
   }
   const signin = async user => {
-    return await request.post('/users/signin').send({
+    return await request.post("/users/signin").send({
       email: user.email,
       password: user.password
     })
@@ -99,9 +93,9 @@ describe('Sign in test', () => {
   let testUid = ""
   beforeAll(async () => {
     const r = await signup({
-      email: 'test99@test.com',
-      password: 'test123',
-      confirmPassword: 'test123'
+      email: "test99@test.com",
+      password: "test123",
+      confirmPassword: "test123"
     })
     testUid = r.body.uid
   })
@@ -109,5 +103,3 @@ describe('Sign in test', () => {
     await fbAdmin.auth().deleteUser(testUid)
   })
 })
-
-

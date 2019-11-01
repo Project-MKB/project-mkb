@@ -9,27 +9,27 @@
   7. should throw error when email already exists
 */
 
-const { setupDB, request, fbAdmin } = require('../test-setup')
-setupDB('signup-test')
+const { setupDB, request, fbAdmin } = require("../test-setup")
+setupDB("signup-test")
 
-describe('Sign up test', () => {
+describe("Sign up test", () => {
   const signup = async user => {
-    return await request.post('/users/signup').send({
+    return await request.post("/users/signup").send({
       email: user.email,
       password: user.password,
       confirmPassword: user.confirmPassword
     })
   }
 
-  test('Should signup successfully', async done => {
+  test("Should signup successfully", async done => {
     const res = await signup({
-      email: 'test99@test.com',
-      password: 'test123',
-      confirmPassword: 'test123'
+      email: "test99@test.com",
+      password: "test123",
+      confirmPassword: "test123"
     })
 
     const newUser = res.body
-    expect(newUser.email).toBe('test99@test.com')
+    expect(newUser.email).toBe("test99@test.com")
     expect(newUser.uid).toBeTruthy()
     expect(newUser.token).toBeTruthy()
 
@@ -39,79 +39,77 @@ describe('Sign up test', () => {
     done()
   })
 
-  test('should throw error when email is empty', async done => {
+  test("should throw error when email is empty", async done => {
     const res = await signup({
-      email: '',
-      password: 'test123',
-      confirmPassword: 'test123'
+      email: "",
+      password: "test123",
+      confirmPassword: "test123"
     })
 
     expect(res.body.error.code).toBe("auth/empty-email")
     done()
   })
 
-  test('should throw error when password is empty', async done => {
+  test("should throw error when password is empty", async done => {
     const res = await signup({
-      email: 'test99@test.com',
-      password: '',
-      confirmPassword: ''
+      email: "test99@test.com",
+      password: "",
+      confirmPassword: ""
     })
 
-    expect(res.body.error.code).toBe('auth/empty-password')
+    expect(res.body.error.code).toBe("auth/empty-password")
     done()
   })
 
-  test('should throw error when email is invalid', async done => {
+  test("should throw error when email is invalid", async done => {
     const res = await signup({
-      email: 'test',
-      password: 'test123',
-      confirmPassword: 'test123'
+      email: "test",
+      password: "test123",
+      confirmPassword: "test123"
     })
 
-    expect(res.body.error.code).toBe('auth/invalid-email')
+    expect(res.body.error.code).toBe("auth/invalid-email")
     done()
   })
 
   test("should throw error when password don't match", async done => {
     const res = await signup({
-      email: 'test99@test.com',
-      password: 'test123',
-      confirmPassword: 'test1234'
+      email: "test99@test.com",
+      password: "test123",
+      confirmPassword: "test1234"
     })
 
-    expect(res.body.error.code).toBe('auth/password-not-match')
+    expect(res.body.error.code).toBe("auth/password-not-match")
     done()
   })
 
-  test('should throw error when password is less than 6', async done => {
+  test("should throw error when password is less than 6", async done => {
     const res = await signup({
-      email: 'test99@test.com',
-      password: 'test1',
-      confirmPassword: 'test1'
+      email: "test99@test.com",
+      password: "test1",
+      confirmPassword: "test1"
     })
 
-    expect(res.body.error.code).toBe('auth/weak-password')
+    expect(res.body.error.code).toBe("auth/weak-password")
     done()
   })
 
-  test('should throw error when email already exists', async done => {
+  test("should throw error when email already exists", async done => {
     const r = await signup({
-      email: 'test99@test.com',
-      password: 'test123',
-      confirmPassword: 'test123'
+      email: "test99@test.com",
+      password: "test123",
+      confirmPassword: "test123"
     })
     const res = await signup({
-      email: 'test99@test.com',
-      password: 'test123',
-      confirmPassword: 'test123'
+      email: "test99@test.com",
+      password: "test123",
+      confirmPassword: "test123"
     })
 
     // delete user that was just created for test
     await fbAdmin.auth().deleteUser(r.body.uid)
 
-    expect(res.body.error.code).toBe('auth/email-already-in-use')
+    expect(res.body.error.code).toBe("auth/email-already-in-use")
     done()
   })
 })
-
-

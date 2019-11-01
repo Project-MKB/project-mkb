@@ -1,8 +1,8 @@
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import thunk from 'redux-thunk'
+import { createStore, combineReducers, applyMiddleware, compose } from "redux"
+import thunk from "redux-thunk"
 
-import userReducer from './reducers/userReducer'
-import recipeReducer from './reducers/recipeReducer'
+import userReducer from "./reducers/userReducer"
+import recipeReducer from "./reducers/recipeReducer"
 
 const initialState = {}
 
@@ -19,6 +19,7 @@ const store = createStore(
   compose(
     applyMiddleware(...middleware),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  ))
+  )
+)
 
 export default store

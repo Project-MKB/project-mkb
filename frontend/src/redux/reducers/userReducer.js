@@ -1,28 +1,27 @@
 const initialState = {
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: false
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'USER_LOGIN_REQUEST':
+    case "USER_LOGIN_REQUEST":
       return {
         ...state,
-        isLoading: true,
+        isLoading: true
       }
-    case 'USER_LOGIN_SUCCESS':
+    case "USER_LOGIN_SUCCESS":
       return {
         isAuthenticated: true,
         isLoading: false,
-        ...action.payload,
+        ...action.payload
       }
-    case 'USER_LOGIN_FAILURE':
+    case "USER_LOGIN_FAILURE":
       return {
         isAuthenticated: false,
         isLoading: false,
-        error: action.payload.error
+        error: action.payload
       }
-
     default:
       return state
   }

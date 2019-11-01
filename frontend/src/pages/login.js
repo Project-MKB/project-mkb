@@ -1,28 +1,28 @@
-import React, { Component } from 'react'
-import { connect } from "react-redux";
-import { loginUser } from "../redux/actions/userActions";
-
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { loginUser } from "../redux/actions/userActions"
 
 export class Login extends Component {
-
   state = {
     email: "",
-    password: "",
+    password: ""
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
     })
   }
 
-  handleSubmit = async (e) => {
+  handleSubmit = async e => {
     e.preventDefault()
-    this.props.loginUser(this.state)
+    this.props.loginUser(this.state, this.props.history)
   }
 
   render() {
     const { user } = this.props
+
+    const errorDiv = user.error ? <div>{user.error.message}</div> : null
 
     return (
       <div className="container">
@@ -40,7 +40,8 @@ export class Login extends Component {
                   className="form-control"
                   id="email"
                   aria-describedby="emailHelp"
-                  placeholder="Enter email" />
+                  placeholder="Enter email"
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="password">Password</label>
@@ -51,29 +52,35 @@ export class Login extends Component {
                   type="password"
                   className="form-control"
                   id="password"
-                  placeholder="Password" />
+                  placeholder="Password"
+                />
               </div>
+
+              {errorDiv}
+
               <button
                 disabled={user.isLoading}
                 type="submit"
-                className="btn btn-primary">
-                {user.isLoading ?
+                className="btn btn-primary"
+              >
+                {user.isLoading ? (
                   <div className="spinner-border text-success" role="status">
                     <span className="sr-only">Loading...</span>
-                  </div> : 'Submit'}
+                  </div>
+                ) : (
+                  "Submit"
+                )}
               </button>
             </form>
           </div>
           <div className="col"></div>
         </div>
-
       </div>
     )
   }
 }
 
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.user
 })
 
@@ -81,4 +88,7 @@ const mapActionsToProps = {
   loginUser
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(Login)
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(Login)
