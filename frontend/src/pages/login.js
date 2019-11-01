@@ -22,7 +22,9 @@ export class Login extends Component {
   render() {
     const { user } = this.props
 
-    const errorDiv = user.error ? <div>{user.error.message}</div> : null
+    const errorDiv = user.error ? (
+      <div className="text-danger mb-3">{user.error.message}</div>
+    ) : null
 
     return (
       <div className="container">
@@ -61,7 +63,7 @@ export class Login extends Component {
               <button
                 disabled={user.isLoading}
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-success"
               >
                 {user.isLoading ? (
                   <div className="spinner-border text-success" role="status">
