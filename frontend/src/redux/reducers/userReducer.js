@@ -1,7 +1,7 @@
 const initialState = {
   isAuthenticated: false,
   isLoading: false
-}
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -9,20 +9,40 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: true
-      }
+      };
     case "USER_LOGIN_SUCCESS":
       return {
         isAuthenticated: true,
         isLoading: false,
         ...action.payload
-      }
+      };
     case "USER_LOGIN_FAILURE":
       return {
         isAuthenticated: false,
         isLoading: false,
         error: action.payload
-      }
+      };
+
+    case "USER_REGISTER_REQUEST":
+      return {
+        ...state,
+        isLoading: true
+      };
+    case "USER_REGISTER_SUCCESS":
+      return {
+        isAuthenticated: true,
+        isLoading: false,
+        ...action.payload
+      };
+    case "USER_REGISTER_FAILURE":
+      return {
+        isAuthenticated: false,
+        isLoading: false,
+        error: action.payload
+      };
+    case "SET_UNAUTHENTICATED":
+      return initialState;
     default:
-      return state
+      return state;
   }
-}
+};

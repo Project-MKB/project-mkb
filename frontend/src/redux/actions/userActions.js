@@ -1,31 +1,78 @@
-import axios from "axios"
+import axios from "axios";
 
+// user login action
 export const loginUser = (userCred, history) => async dispatch => {
-  dispatch({ type: "USER_LOGIN_REQUEST" })
+  dispatch({ type: "USER_LOGIN_REQUEST" });
 
   try {
     // call login api
-    const res = await axios.post("http://localhost:5000/users/signin", userCred)
+    const res = await axios.post(
+      "http://localhost:5000/users/signin",
+      userCred
+    );
 
-    console.log(`welcome ${res.data.email}`)
+    console.log(`welcome ${res.data.email}`);
+    setAuthorizationHeader(res.data.token);
 
-    // save token to local storage to use it later
-    // when calling another api that only logged in user can call
-    const token = `Bearer ${res.data.token}`
-    localStorage.setItem("token", token)
     dispatch({
       type: "USER_LOGIN_SUCCESS",
       payload: res.data
-    })
+    });
 
     // redirect to home page when login process finishes
-    history.push("/")
+    history.push("/");
   } catch (e) {
-    const error = e.response.data.error
-    console.log(error)
+    const error = e.response.data.error;
+    console.log(error);
     dispatch({
       type: "USER_LOGIN_FAILURE",
       payload: error
-    })
+    });
   }
-}
+};
+
+// user signup action
+export const registerUser = (userCred, history) => async dispatch => {
+  dispatch({ type: "USER_REGISTER_REQUEST" });
+
+  try {
+    // call login api
+    const res = await axios.post(
+      "http://localhost:5000/users/signup",
+      userCred
+    );
+
+    console.log(`welcome ${res.data.email}`);
+    setAuthorizationHeader(res.data.token);
+
+    dispatch({
+      type: "USER_REGISTER_SUCCESS",
+      payload: res.data
+    });
+
+    // redirect to home page when login process finishes
+    history.push("/");
+  } catch (e) {
+    const error = e.response.data.error;
+    console.log(error);
+    dispatch({
+      type: "USER_REGISTER_FAILURE",
+      payload: error
+    });
+  }
+};
+
+// user signout action
+export const signoutUser = () => dispatch => {
+  localStorage.removeItem("token");
+  delete axios.defaults.headers.common["Authorization"];
+  dispatch({ type: "SET_UNAUTHENTICATED" });
+};
+
+// save token to local storage to use it later
+// when calling another api that only logged in user can call
+const setAuthorizationHeader = token => {
+  const idToken = `Bearer ${token}`;
+  localStorage.setItem("token", idToken);
+  axios.defaults.headers.common["Authorization"] = idToken;
+};

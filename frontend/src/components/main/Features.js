@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 const Features = () => {
   return (
@@ -20,7 +20,7 @@ const Features = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Features
+export default Features;

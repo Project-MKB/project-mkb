@@ -1,30 +1,30 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
-import { loginUser } from "../redux/actions/userActions"
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { loginUser } from "../redux/actions/userActions";
 
 export class Login extends Component {
   state = {
     email: "",
     password: ""
-  }
+  };
 
   handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
-    })
-  }
+    });
+  };
 
   handleSubmit = async e => {
-    e.preventDefault()
-    this.props.loginUser(this.state, this.props.history)
-  }
+    e.preventDefault();
+    this.props.loginUser(this.state, this.props.history);
+  };
 
   render() {
-    const { user } = this.props
+    const { user } = this.props;
 
     const errorDiv = user.error ? (
       <div className="text-danger mb-3">{user.error.message}</div>
-    ) : null
+    ) : null;
 
     return (
       <div className="container">
@@ -66,7 +66,7 @@ export class Login extends Component {
                 className="btn btn-success"
               >
                 {user.isLoading ? (
-                  <div className="spinner-border text-success" role="status">
+                  <div className="spinner-border text-light" role="status">
                     <span className="sr-only">Loading...</span>
                   </div>
                 ) : (
@@ -78,19 +78,19 @@ export class Login extends Component {
           <div className="col"></div>
         </div>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => ({
   user: state.user
-})
+});
 
 const mapActionsToProps = {
   loginUser
-}
+};
 
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(Login)
+)(Login);
