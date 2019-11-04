@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Backend Schedule Breakdown
 4 weeks left
 
@@ -8,6 +9,8 @@ Week 6 : Test backend APIs from frontend UI and bug fix
 
 
 
+=======
+>>>>>>> 015442733e5187d544e931c057eba14253e0c717
 # API Documentation
 
 # Users
