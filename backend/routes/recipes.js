@@ -1,17 +1,15 @@
-const router = require('express').Router();
-const Recipe = require('../models/recipe.model');
-const User = require('../models/user.model')
-const fbAuth = require('../util/fbAuth')
-
+const router = require("express").Router();
+const Recipe = require("../models/recipe.model");
+const User = require("../models/user.model");
+const fbAuth = require("../util/fbAuth");
 
 // get recommended recipes
-router.get('/listRecs', fbAuth, async (req, res) => {
+router.get("/listRecs", fbAuth, async (req, res) => {
   // get user data
-  const user = await User.findOne({ uid: req.user.uid })
+  const user = await User.findOne({ uid: req.user.uid });
 
   // search recipes from db that matches user preferences
   try {
-
     //================================================
     /* TODO: Brain storming! 
     please give me an idea to implement this efficiently
@@ -20,35 +18,28 @@ router.get('/listRecs', fbAuth, async (req, res) => {
     */
 
     // get all recipes from the DB
-    let allRecipes = await Recipe.find()
-      .select('title cuisine tags rating')
+    let allRecipes = await Recipe.find().select("title cuisine tags rating");
     // show all recipes that the tag includes all of user preferences
-    recipes = calRecRecipes(user.preferences, allRecipes)
+    recipes = calRecRecipes(user.preferences, allRecipes);
     //================================================
 
-    return res.status(200).json(recipes)
+    return res.status(200).json(recipes);
   } catch (error) {
-    console.error(error)
-    return res.status(500).json({ error })
+    console.error(error);
+    return res.status(500).json({ error });
   }
 });
-
 
 const calRecRecipes = (userPref, allRecipes) => {
   // get list of recipes that matches userPref
   return allRecipes.filter(recipe => {
-    return userPref.every(p => recipe.tags.includes(p))
-  })
-}
-
-
-
-
-
+    return userPref.every(p => recipe.tags.includes(p));
+  });
+};
 
 // add recipe
-router.post('/add', fbAuth, async (req, res) => {
-  let newRecipe = req.body
+router.post("/add", fbAuth, async (req, res) => {
+  let newRecipe = req.body;
 
   newRecipe = new Recipe({
     ...newRecipe,
@@ -58,22 +49,17 @@ router.post('/add', fbAuth, async (req, res) => {
   });
 
   try {
-    await newRecipe.save()
-    return res.status(200).json(newRecipe)
+    await newRecipe.save();
+    return res.status(200).json(newRecipe);
   } catch (error) {
-    console.error(error)
-    return res.status(500).json({ error })
+    console.error(error);
+    return res.status(500).json({ error });
   }
 });
 
-
-
-
-
-
 // get one recipe by id
 
-
 module.exports = {
-  router, calRecRecipes
+  router,
+  calRecRecipes
 };
