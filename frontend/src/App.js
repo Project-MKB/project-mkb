@@ -11,19 +11,24 @@ import PageNotFound from "./pages/404";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import jwtDecode from "jwt-decode";
-import dayjs from "dayjs";
+import { signoutUser, getUser } from "./redux/actions/userActions";
 
-let token = localStorage.token.split("Bearer ")[1];
+// see if user is logged in when app is first launched
+// or when browser is refreshed by checking token stored in localStorage
+let token = localStorage.token;
 if (token) {
-  token = jwtDecode(token);
+  token = jwtDecode(token.split("Bearer ")[1]);
   if (token.exp * 1000 < Date.now()) {
-    store.dispatch({ type: "SIGNOUT" });
+    // if there's no valid token, remove login state
+    store.dispatch(signoutUser());
+  } else {
+    // else, get user info
+    store.dispatch(getUser());
   }
 }
 
 class App extends Component {
   render() {
-    console.log(dayjs(token.exp * 1000).format());
     return (
       <Provider store={store}>
         <Router>

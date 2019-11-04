@@ -62,6 +62,27 @@ export const registerUser = (userCred, history) => async dispatch => {
   }
 };
 
+// get user info action
+export const getUser = () => async dispatch => {
+  dispatch({ type: "USER_GET_REQUEST" });
+
+  try {
+    // call get user api
+    const res = await axios.get("http://localhost:5000/users/");
+    dispatch({
+      type: "USER_GET_SUCCESS",
+      payload: res.data
+    });
+  } catch (e) {
+    const error = e.response.data.error;
+    console.log(error);
+    dispatch({
+      type: "USER_GET_FAILURE",
+      payload: error
+    });
+  }
+};
+
 // user signout action
 export const signoutUser = () => dispatch => {
   localStorage.removeItem("token");

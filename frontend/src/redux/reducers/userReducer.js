@@ -40,8 +40,28 @@ export default (state = initialState, action) => {
         isLoading: false,
         error: action.payload
       };
+
+    case "USER_GET_REQUEST":
+      return {
+        ...state,
+        isLoading: true
+      };
+    case "USER_GET_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        ...action.payload
+      };
+    case "USER_GET_FAILURE":
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload
+      };
+
     case "SET_UNAUTHENTICATED":
       return initialState;
+
     default:
       return state;
   }
