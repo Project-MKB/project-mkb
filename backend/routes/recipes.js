@@ -2,10 +2,17 @@ const router = require("express").Router();
 const Recipe = require("../models/recipe.model");
 const User = require("../models/user.model");
 const fbAuth = require("../util/fbAuth");
+const { validateRecipeData } = require("../util/validators");
 
 // add recipe
 router.post("/add", fbAuth, async (req, res) => {
   let newRecipe = req.body;
+
+  // validate data
+  const { error, valid } = validateRecipeData(newRecipe);
+  if (!valid) {
+    return res.status(400).json({ error });
+  }
 
   newRecipe = new Recipe({
     ...newRecipe,
@@ -36,11 +43,11 @@ router.get("/get/:id", fbAuth, async (req, res) => {
 
 // get recommended recipes
 router.get("/listRecs", fbAuth, async (req, res) => {
-  // get user data
-  const user = await User.findOne({ uid: req.user.uid });
-
   // search recipes from db that matches user preferences
   try {
+    // get user data
+    const user = await User.findOne({ uid: req.user.uid });
+
     //================================================
     /* TODO: Brain storming! 
     please give me an idea to implement this efficiently
@@ -57,6 +64,29 @@ router.get("/listRecs", fbAuth, async (req, res) => {
     //================================================
 
     return res.status(200).json(recipes);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error });
+  }
+});
+
+// update recipe by ID
+router.post("/update/:id", fbAuth, async (req, res) => {
+  const newRecipe = req.body;
+
+  // validate data
+  const { error, valid } = validateRecipeData(newRecipe);
+  if (!valid) {
+    return res.status(400).json({ error });
+  }
+
+  try {
+    const recipe = await Recipe.findByIdAndUpdate(req.params.id, newRecipe, {
+      useFindAndModify: false,
+      new: true,
+      runValidators: true
+    });
+    return res.status(200).json(recipe);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error });
