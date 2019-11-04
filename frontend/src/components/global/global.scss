@@ -1,0 +1,29 @@
+// Navigation 1
+
+// Navigation 2
+
+// CTA
+
+// Footer
+footer {
+    background-color: $dkgreen;
+    padding: 30px 0 20px;
+    color: $offwhite;
+
+    svg {
+        margin: 0 10px;
+    }
+
+    a {
+        color:$offwhite;
+        &:visited {
+            color:$offwhite;
+        }
+        &:hover {
+            color: $ltgray;
+        }
+        &:active {
+            color: $turquoise;
+        }
+    }
+}

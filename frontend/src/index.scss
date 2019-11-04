@@ -1,0 +1,38 @@
+// Colors
+$dkgray: #262626;
+$ltgray: #b6b6b6;
+$dkgreen: #006a60;
+$mdgreen: #037b70;
+$turquoise: #07cfbd;
+$offwhite: #eef1eb;
+$white: #ffffff;
+
+//Typography
+
+
+// Links
+
+// General
+body {
+    color: $dkgray;
+}
+// GLOBAL COMPONENTS
+.btn-primary {
+    background-color: $dkgreen;
+    border-color: $dkgreen;
+
+    &:hover {
+        background-color: $mdgreen;
+        border-color: $mdgreen;
+    }
+}
+
+.btn-outline-primary {
+    border-color: $dkgreen;
+    color: $dkgreen;
+
+    &:hover {
+        background-color: $mdgreen;
+        border-color: $mdgreen;
+    }
+}
