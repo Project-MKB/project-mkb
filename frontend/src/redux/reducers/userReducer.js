@@ -59,6 +59,11 @@ export default (state = initialState, action) => {
         error: action.payload
       };
 
+    case "SET_AUTHENTICATED":
+      return {
+        ...state,
+        isAuthenticated: true
+      };
     case "SET_UNAUTHENTICATED":
       return initialState;
 
