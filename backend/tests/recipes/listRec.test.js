@@ -1,9 +1,7 @@
 /* 
   # get recommended recipe test
   1. should return recipes that match user preferences
-  2. should throw error when token is invalid (auth/argument-error)
-  3. should throw error when data type is wrong
-  4. should throw error when required data is empty
+  2. Should return correct array for recommendation
 */
 
 const { setupDB, request, fbAdmin, fb } = require("../test-setup");
@@ -60,14 +58,7 @@ describe("List recommended recipes test", () => {
 
     const recipe = res.body[0];
     expect(recipe.title).toBe("The Best Shrimp Alfredo");
-    expect(recipe.totalTime).toBe(25);
-    expect(recipe.ingredients).toEqual(["shrimp", "fettuccine", "soy sauce"]);
-    expect(recipe.directions).toEqual([
-      "prepare ingredients",
-      "cook",
-      "eat",
-      "clean"
-    ]);
+    expect(recipe.cuisine).toBe("italy");
     expect(recipe.tags).toEqual(["italy", "shrimp", "creamy"]);
 
     done();

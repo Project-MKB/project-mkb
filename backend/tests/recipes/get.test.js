@@ -1,13 +1,14 @@
 /* 
-  # create recipe test
-  1. should create recipe successfully
+  # get one particular recipe test
+  1. should return the recipe requested by ID
 */
 
 const { setupDB, request, fbAdmin, fb } = require("../test-setup");
 const { getToken, signup, deleteUser } = require("../auth-setup");
+const { calRecRecipes } = require("../../routes/recipes");
 setupDB("recipe-test");
 
-describe("Create recipe test", () => {
+describe("Get one recipe test", () => {
   let testUid = "";
   beforeAll(async () => {
     testUid = await signup();
@@ -21,9 +22,15 @@ describe("Create recipe test", () => {
       .set("Authorization", "Bearer " + token);
   };
 
-  test("Should create recipe successfully", async done => {
+  const getRecipe = async (id, token) => {
+    return await request
+      .get(`/recipes/get/${id}`)
+      .set("Authorization", "Bearer " + token);
+  };
+
+  test("Should return the recipe requested by ID", async done => {
     const token = await getToken();
-    const res = await create(
+    const resCreate = await create(
       {
         title: "The Best Shrimp Alfredo",
         ingredients: ["shrimp", "fettuccine", "soy sauce"],
@@ -46,7 +53,12 @@ describe("Create recipe test", () => {
       token
     );
 
-    const recipe = res.body;
+    const resGet = await getRecipe(resCreate.body._id, token);
+    if (resGet.error) {
+      console.error(resGet.error);
+    }
+    const recipe = resGet.body;
+
     expect(recipe.title).toBe("The Best Shrimp Alfredo");
     expect(recipe.totalTime).toBe(25);
     expect(recipe.ingredients).toEqual(["shrimp", "fettuccine", "soy sauce"]);
