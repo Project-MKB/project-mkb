@@ -81,12 +81,57 @@ router.post("/update/:id", fbAuth, async (req, res) => {
   }
 
   try {
-    const recipe = await Recipe.findByIdAndUpdate(req.params.id, newRecipe, {
-      useFindAndModify: false,
-      new: true,
-      runValidators: true
-    });
-    return res.status(200).json(recipe);
+    const recipe = await Recipe.findById(req.params.id);
+
+    // if recipe's uid doesn't match current user uid, return error
+    if (recipe.uid !== req.user.uid) {
+      return res.status(403).json({
+        error: {
+          code: "auth/unauthorized",
+          message:
+            "You cannot update other people's recipes. Please clone the recipe first and update."
+        }
+      });
+    }
+
+    const updatedRecipe = await Recipe.findByIdAndUpdate(
+      req.params.id,
+      {
+        ...newRecipe,
+        totalTime: newRecipe.prepTime + newRecipe.cookTime
+      },
+      {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+      }
+    );
+
+    return res.status(200).json(updatedRecipe);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error });
+  }
+});
+
+// delete recipe by ID
+router.delete("/delete/:id", fbAuth, async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+
+    // if recipe's uid doesn't match current user uid, return error
+    if (recipe.uid !== req.user.uid) {
+      return res.status(403).json({
+        error: {
+          code: "auth/unauthorized",
+          message: "You cannot delete other people's recipes."
+        }
+      });
+    }
+
+    const deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
+
+    return res.status(200).json(deletedRecipe);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error });
