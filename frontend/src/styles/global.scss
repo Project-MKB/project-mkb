@@ -1,3 +1,28 @@
+// General
+body {
+    color: $dkgray;
+}
+.btn-primary {
+    background-color: $dkgreen;
+    border-color: $dkgreen;
+
+    &:hover {
+        background-color: $mdgreen;
+        border-color: $mdgreen;
+    }
+}
+.btn-outline-primary {
+    border-color: $dkgreen;
+    color: $dkgreen;
+
+    &:hover {
+        background-color: $mdgreen;
+        border-color: $mdgreen;
+    }
+}
+
+
+// GLOBAL COMPONENTS
 // Navigation 1
 
 // Navigation 2
