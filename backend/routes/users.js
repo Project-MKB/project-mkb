@@ -5,7 +5,6 @@ const {
   validateSignupData,
   validateSigninData
 } = require("../util/validators");
-const fbAdmin = require("../util/fbAdminConfig");
 const fbAuth = require("../util/fbAuth");
 
 // get authenticated user

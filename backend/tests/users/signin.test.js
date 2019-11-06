@@ -8,8 +8,8 @@
   6. should throw error when password is wrong
 */
 
-const { setupDB, request, fbAdmin } = require("../test-setup");
-const { getToken, signup, deleteUser } = require("../auth-setup");
+const { setupDB, request } = require("../test-setup");
+const { signup, deleteUser } = require("../auth-setup");
 setupDB("signin-test");
 
 describe("Sign in test", () => {

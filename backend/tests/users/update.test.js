@@ -5,7 +5,7 @@
   3. should throw error when data type is wrong
 */
 
-const { setupDB, request, fbAdmin, fb } = require("../test-setup");
+const { setupDB, request } = require("../test-setup");
 const { getToken, signup, deleteUser } = require("../auth-setup");
 setupDB("updateUser-test");
 
