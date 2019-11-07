@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Nav from '../components/global/Footer';
+import Footer from '../components/global/Footer';
 
 class Login extends Component {
     constructor() {
@@ -55,7 +55,7 @@ class Login extends Component {
                         </form>
                     </div>
                 </div>
-                <Nav />
+                <Footer />
             </div>
         )
     }
