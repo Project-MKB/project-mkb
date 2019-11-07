@@ -5,7 +5,6 @@ const {
   validateSignupData,
   validateSigninData
 } = require("../util/validators");
-const fbAdmin = require("../util/fbAdminConfig");
 const fbAuth = require("../util/fbAuth");
 
 // get authenticated user
@@ -19,6 +18,7 @@ router.get("/", fbAuth, async (req, res) => {
   }
 });
 
+// signup user
 router.post("/signup", async (req, res) => {
   // get data from client
   let newUser = {
@@ -62,6 +62,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+// signin user
 router.post("/signin", async (req, res) => {
   // get data from client
   let user = {
@@ -94,6 +95,7 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+// update user data
 router.post("/update", fbAuth, async (req, res) => {
   try {
     const user = await User.findOneAndUpdate(

@@ -3,7 +3,6 @@ const fbAdmin = require("./fbAdminConfig");
 module.exports = async (req, res, next) => {
   let token;
   const auth = req.headers.authorization;
-  console.log(req.headers);
   if (auth && auth.startsWith("Bearer ")) {
     token = auth.split("Bearer ")[1];
   } else {

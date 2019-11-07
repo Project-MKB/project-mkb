@@ -22,13 +22,15 @@
 
 - [POST /recipes/add](#post-recipesadd)
 - [GET /recipes/listRecs](#get-recipeslistrecs)
-- [GET /recipes/:id](#get-recipesid)
+- [GET /recipes/get/:id](#get-recipesgetid)
+- [POST /recipes/update/:id](#post-recipesupdateid)
+- [DELETE /recipes/delete/:id](#delete-recipesdeleteid)
 
 # Users
 
 ## POST /users/signup
 
-### Request body:
+### Request body: (email, password, confirm password)
 
 | Property                | Description         |
 | ----------------------- | ------------------- |
@@ -36,7 +38,7 @@
 | password: String        | password            |
 | confirmPassword: String | password to confirm |
 
-### Response:
+### Response: (Created user info)
 
 | Property                | Description                               |
 | ----------------------- | ----------------------------------------- |
@@ -62,14 +64,14 @@
 
 ## POST /users/signin
 
-### Request body:
+### Request body: (email, password)
 
 | Property         | Description   |
 | ---------------- | ------------- |
 | email: String    | email address |
 | password: String | password      |
 
-### Response:
+### Response: (Signed in user info)
 
 | Property                | Description                               |
 | ----------------------- | ----------------------------------------- |
@@ -94,13 +96,13 @@
 
 ## POST /users/update
 
-### Request body:
+### Request body: (User info to update)
 
 | Property     | Description                           |
 | ------------ | ------------------------------------- |
 | user: Object | all user info (overwrite existing db) |
 
-### Response:
+### Response: (Updated user info)
 
 | Property                | Description                              |
 | ----------------------- | ---------------------------------------- |
@@ -123,13 +125,13 @@
 
 ## GET /users
 
-### Request body:
+### Request body: (N/A - user token is passed with req header)
 
 | Property | Description |
 | -------- | ----------- |
 | N/A      | N/A         |
 
-### Response:
+### Response: (Requested user info)
 
 | Property                | Description                              |
 | ----------------------- | ---------------------------------------- |
@@ -154,7 +156,7 @@
 
 ## POST /recipes/add
 
-### Request body:
+### Request body: (Recipe to create)
 
 | Property              | Description                                 |
 | --------------------- | ------------------------------------------- |
@@ -172,7 +174,7 @@
 | images: [String]      | array of urls of the images                 |
 | tags: [String]        | will be used for recommendations and search |
 
-### Response:
+### Response: (Created recipe)
 
 | Property              | Description                                   |
 | --------------------- | --------------------------------------------- |
@@ -202,53 +204,49 @@
 
 ## GET /recipes/listRecs
 
-### Request body:
+### Request body: (N/A - calculate recommendation using user info)
 
 | Property | Description |
 | -------- | ----------- |
 | N/A      | N/A         |
 
-### Response:
+### Response: (Array of recommended recipes)
 
-- Array of below response
-
-| Property          | Description                                   |
-| ----------------- | --------------------------------------------- |
-| \_id: String      | recipe id                                     |
-| title: String     |                                               |
-| mainImage: String | url of the image                              |
-| tags: [String]    | will be used for recommendations and search   |
-| rating: Number    | zero at first, will be updated by other users |
-
-| ingredients: [String] | |
-| directions: [String] | |
-| prepTime: Number | |
-| cookTime: Number | |
-| totalTime: Number | prepTime + cookTime |
-| servingSize: Number | |
-| category: String | |
-| cuisine: String | |
-| footNote: [String] | |
-| difficulty: Number | |
-| images: [String] | array of urls of the images |
-| uid: String | creator's user id |
-| createdAt: String | |
-| updatedAt: String | |
+| Property              | Description                                   |
+| --------------------- | --------------------------------------------- |
+| \_id: String          | recipe id                                     |
+| title: String         |                                               |
+| mainImage: String     | url of the image                              |
+| tags: [String]        | will be used for recommendations and search   |
+| rating: Number        | zero at first, will be updated by other users |
+| ingredients: [String] |                                               |
+| directions: [String]  |                                               |
+| prepTime: Number      |                                               |
+| cookTime: Number      |                                               |
+| totalTime: Number     | prepTime + cookTime                           |
+| servingSize: Number   |                                               |
+| category: String      |                                               |
+| cuisine: String       |                                               |
+| footNote: [String]    |                                               |
+| difficulty: Number    |                                               |
+| images: [String]      | array of urls of the images                   |
+| uid: String           | creator's user id                             |
+| createdAt: String     |                                               |
+| updatedAt: String     |                                               |
 
 ### Errors:
 
 - auth token is not valid or expired
--
 
-## GET /recipes/:id
+## GET /recipes/get/:id
 
-### Request body:
+### Request body: (ID of the recipe to get)
 
 | Property | Description |
 | -------- | ----------- |
 | \_id     | recipe id   |
 
-### Response:
+### Response: (Requested recipe)
 
 | Property              | Description                                   |
 | --------------------- | --------------------------------------------- |
@@ -271,3 +269,93 @@
 | uid: String           | creator's user id                             |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
+
+### Errors:
+
+- auth token is not valid or expired
+
+## POST /recipes/update/:id
+
+### Request body: (Recipe to update)
+
+- Updated recipe
+
+| Property              | Description                                 |
+| --------------------- | ------------------------------------------- |
+| title: String         |                                             |
+| ingredients: [String] |                                             |
+| directions: [String]  |                                             |
+| prepTime: Number      |                                             |
+| cookTime: Number      |                                             |
+| servingSize: Number   |                                             |
+| category: String      |                                             |
+| cuisine: String       |                                             |
+| footNote: [String]    |                                             |
+| difficulty: Number    |                                             |
+| mainImage: String     | url of the image                            |
+| images: [String]      | array of urls of the images                 |
+| tags: [String]        | will be used for recommendations and search |
+
+### Response: (Updated recipe)
+
+| Property              | Description                                   |
+| --------------------- | --------------------------------------------- |
+| \_id: String          | recipe id                                     |
+| title: String         |                                               |
+| ingredients: [String] |                                               |
+| directions: [String]  |                                               |
+| prepTime: Number      |                                               |
+| cookTime: Number      |                                               |
+| totalTime: Number     | prepTime + cookTime                           |
+| servingSize: Number   |                                               |
+| category: String      |                                               |
+| cuisine: String       |                                               |
+| footNote: [String]    |                                               |
+| difficulty: Number    |                                               |
+| mainImage: String     | url of the image                              |
+| images: [String]      | array of urls of the images                   |
+| tags: [String]        | will be used for recommendations and search   |
+| rating: Number        | zero at first, will be updated by other users |
+| uid: String           | creator's user id                             |
+| createdAt: String     |                                               |
+| updatedAt: String     |                                               |
+
+### Errors:
+
+- auth token is not valid or expired
+
+## DELETE /recipes/delete/:id
+
+### Request body: (ID of the recipe to delete)
+
+| Property | Description |
+| -------- | ----------- |
+| \_id     | recipe id   |
+
+### Response: (Deleted recipe)
+
+| Property              | Description                                   |
+| --------------------- | --------------------------------------------- |
+| \_id: String          | recipe id                                     |
+| title: String         |                                               |
+| ingredients: [String] |                                               |
+| directions: [String]  |                                               |
+| prepTime: Number      |                                               |
+| cookTime: Number      |                                               |
+| totalTime: Number     | prepTime + cookTime                           |
+| servingSize: Number   |                                               |
+| category: String      |                                               |
+| cuisine: String       |                                               |
+| footNote: [String]    |                                               |
+| difficulty: Number    |                                               |
+| mainImage: String     | url of the image                              |
+| images: [String]      | array of urls of the images                   |
+| tags: [String]        | will be used for recommendations and search   |
+| rating: Number        | zero at first, will be updated by other users |
+| uid: String           | creator's user id                             |
+| createdAt: String     |                                               |
+| updatedAt: String     |                                               |
+
+### Errors:
+
+- auth token is not valid or expired

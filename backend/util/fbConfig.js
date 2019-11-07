@@ -1,4 +1,4 @@
-const firebase = require("firebase")
+const firebase = require("firebase");
 
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
@@ -9,8 +9,8 @@ const firebaseConfig = {
   messagingSenderId: process.env.MESSAGING_SENDER_ID,
   appId: process.env.APP_ID,
   measurementId: process.env.MEASUREMENT_ID
-}
+};
 
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
 
-module.exports = firebase
+module.exports = firebase;
