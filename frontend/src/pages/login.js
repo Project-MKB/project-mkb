@@ -1,96 +1,64 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { loginUser } from "../redux/actions/userActions";
+import React, { Component } from 'react';
+import Nav from '../components/global/Footer';
 
-export class Login extends Component {
-  state = {
-    email: "",
-    password: ""
-  };
+class Login extends Component {
+    constructor() {
+        super();
+        this.state = {
+            email: '',
+            password: ''
+        }
+    }
 
-  handleChange = e => {
-    this.setState({
-      [e.target.id]: e.target.value
-    });
-  };
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+    
+        this.setState({
+          [name]: value
+        });
 
-  handleSubmit = async e => {
-    e.preventDefault();
-    this.props.loginUser(this.state, this.props.history);
-  };
+        console.log(event.target.value);
+      }
 
-  render() {
-    const { user } = this.props;
-
-    const errorDiv = user.error ? (
-      <div className="text-danger mb-3">{user.error.message}</div>
-    ) : null;
-
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col"></div>
-          <div className="col mt-5">
-            <form onSubmit={this.handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="email">Email address</label>
-                <input
-                  required
-                  onChange={this.handleChange}
-                  value={this.state.email}
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter email"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  required
-                  onChange={this.handleChange}
-                  value={this.state.password}
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  placeholder="Password"
-                />
-              </div>
-
-              {errorDiv}
-
-              <button
-                disabled={user.isLoading}
-                type="submit"
-                className="btn btn-success"
-              >
-                {user.isLoading ? (
-                  <div className="spinner-border text-light" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                ) : (
-                  "Submit"
-                )}
-              </button>
-            </form>
-          </div>
-          <div className="col"></div>
-        </div>
-      </div>
-    );
-  }
+      handleSubmit(event) {
+        console.log(this.state.value);
+        event.preventDefault();
+      }
+    
+    render(){
+        return(
+            <div id="container">
+                <div className="row justify-content-center">
+                    <div className="col-12 col-md-4">
+                        <h2>Welcome Back</h2>
+                    </div>
+                </div>
+                <div className="row justify-content-center">
+                    <div className="col-12 col-md-4">
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">Email address</label>
+                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email" onChange={this.handleInputChange.bind(this)} value={this.state.email} />
+                                <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInputPassword1">Password</label>
+                                <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" name="password" onChange={this.handleInputChange.bind(this)} value={this.state.password} />
+                            </div>
+                            <div className="form-group form-check">
+                                <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                                <a href="http://www.google.com">Forgot your password?</a>
+                            </div>
+                            <button type="submit" className="btn btn-primary">Login</button>
+                        </form>
+                    </div>
+                </div>
+                <Nav />
+            </div>
+        )
+    }
 }
 
-const mapStateToProps = state => ({
-  user: state.user
-});
-
-const mapActionsToProps = {
-  loginUser
-};
-
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(Login);
+export default Login;
