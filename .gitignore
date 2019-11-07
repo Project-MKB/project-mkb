@@ -90,3 +90,7 @@ typings/
 
 # next.js build output
 .next
+
+
+# firebase admin service credential
+project-mkb-firebase-adminsdk-uia11-70097d3253.json
