@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Main = () => <h1>This is the Main page</h1>;
 
