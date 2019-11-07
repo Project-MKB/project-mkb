@@ -10,8 +10,6 @@ export const loginUser = (userCred, history) => async dispatch => {
       "http://localhost:5000/users/signin",
       userCred
     );
-
-    console.log(`welcome ${res.data.email}`);
     setAuthorizationHeader(res.data.token);
 
     dispatch({
@@ -21,6 +19,7 @@ export const loginUser = (userCred, history) => async dispatch => {
 
     // redirect to home page when login process finishes
     history.push("/");
+    console.log(`Welcome ${res.data.email}`);
   } catch (e) {
     const error = e.response.data.error;
     console.log(error);
@@ -88,6 +87,7 @@ export const signoutUser = () => dispatch => {
   localStorage.removeItem("token");
   delete axios.defaults.headers.common["Authorization"];
   dispatch({ type: "SET_UNAUTHENTICATED" });
+  console.log("Successfully signed out");
 };
 
 // save token to local storage to use it later
