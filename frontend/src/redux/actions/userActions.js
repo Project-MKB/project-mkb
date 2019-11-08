@@ -90,6 +90,11 @@ export const signoutUser = () => dispatch => {
   console.log("Successfully signed out");
 };
 
+// update user info
+export const updateUser = user => dispatch => {
+  console.log("update user action");
+};
+
 // save token to local storage to use it later
 // when calling another api that only logged in user can call
 const setAuthorizationHeader = token => {
