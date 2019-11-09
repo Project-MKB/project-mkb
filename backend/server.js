@@ -1,6 +1,6 @@
-const app = require('./app')
+const app = require("./app");
 const port = process.env.PORT || 5000;
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // Connect database
 const uri = process.env.ATLAS_URI;
@@ -10,9 +10,9 @@ mongoose.connect(uri, {
   useUnifiedTopology: true
 });
 const connection = mongoose.connection;
-connection.once('open', () => {
+connection.once("open", () => {
   console.log("MongoDB database connection established successfully");
-})
+});
 
 // Connect backend server
 app.listen(port, () => {
