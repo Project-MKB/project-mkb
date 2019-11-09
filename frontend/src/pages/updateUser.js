@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateUser } from "../redux/actions/userActions";
+import checkWhyRerender from "../util/checkWhyRerender";
 
 export class UpdateUser extends Component {
   state = {
@@ -11,8 +12,7 @@ export class UpdateUser extends Component {
     cuisine: ""
   };
 
-  componentDidMount() {
-    const { user } = this.props;
+  updateStateFromProps = user => {
     this.setState({
       displayName: user.displayName || "",
       preferences: user.preferences || [],
@@ -20,19 +20,15 @@ export class UpdateUser extends Component {
       country: user.country || "",
       cuisine: user.cuisine || ""
     });
+  };
+
+  componentDidMount() {
+    this.updateStateFromProps(this.props.user);
   }
 
-  componentDidUpdate(prevProps) {
-    const { user } = this.props;
-    console.log(user);
-    if (user.displayName !== prevProps.user.displayName) {
-      this.setState({
-        displayName: user.displayName || "",
-        preferences: user.preferences || [],
-        photoURL: user.photoURL || "",
-        country: user.country || "",
-        cuisine: user.cuisine || ""
-      });
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.user.isLoading !== prevProps.user.isLoading) {
+      this.updateStateFromProps(this.props.user);
     }
   }
 
@@ -48,6 +44,11 @@ export class UpdateUser extends Component {
   };
 
   render() {
+    const { user } = this.props;
+    if (user.isLoading) {
+      return <div>Loading...</div>;
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
