@@ -13,7 +13,6 @@ export class UpdateUser extends Component {
 
   componentDidMount() {
     const { user } = this.props;
-    console.log(user);
     this.setState({
       displayName: user.displayName || "",
       preferences: user.preferences || [],
@@ -21,6 +20,20 @@ export class UpdateUser extends Component {
       country: user.country || "",
       cuisine: user.cuisine || ""
     });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { user } = this.props;
+    console.log(user);
+    if (user.displayName !== prevProps.user.displayName) {
+      this.setState({
+        displayName: user.displayName || "",
+        preferences: user.preferences || [],
+        photoURL: user.photoURL || "",
+        country: user.country || "",
+        cuisine: user.cuisine || ""
+      });
+    }
   }
 
   handleChange = e => {
