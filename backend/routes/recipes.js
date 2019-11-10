@@ -3,6 +3,7 @@ const Recipe = require("../models/recipe.model");
 const User = require("../models/user.model");
 const fbAuth = require("../util/fbAuth");
 const { validateRecipeData } = require("../util/validators");
+const mongoose = require("mongoose");
 
 // add recipe
 router.post("/add", fbAuth, async (req, res) => {
@@ -132,6 +133,22 @@ router.delete("/delete/:id", fbAuth, async (req, res) => {
     const deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
 
     return res.status(200).json(deletedRecipe);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error });
+  }
+});
+
+// clone recipe
+// create same recipe with requested user's uid
+router.post("/clone/:id", fbAuth, async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+    recipe._id = mongoose.Types.ObjectId();
+    recipe.isNew = true;
+    recipe.uid = req.user.uid;
+    await recipe.save();
+    return res.status(200).json(recipe);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error });

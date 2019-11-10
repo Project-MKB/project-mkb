@@ -1,13 +1,13 @@
 /* 
   # create recipe test
-  1. should update recipe successfully
+  1. should clone recipe successfully
 */
 
 const { setupDB, request } = require("../test-setup");
 const { getToken, signup, deleteUser } = require("../auth-setup");
 setupDB("recipe-test");
 
-describe("Update recipe test", () => {
+describe("Clone recipe test", () => {
   let testUid = "";
   beforeAll(async () => {
     testUid = await signup();
@@ -21,14 +21,13 @@ describe("Update recipe test", () => {
       .set("Authorization", "Bearer " + token);
   };
 
-  const update = async (id, recipe, token) => {
+  const clone = async (id, token) => {
     return await request
-      .post(`/recipes/update/${id}`)
-      .send(recipe)
+      .post(`/recipes/clone/${id}`)
       .set("Authorization", "Bearer " + token);
   };
 
-  test("Should update recipe successfully", async done => {
+  test("Should clone recipe successfully", async done => {
     const token = await getToken();
     const resCreate = await create(
       {
@@ -53,36 +52,17 @@ describe("Update recipe test", () => {
       token
     );
 
-    const resUpdate = await update(
-      resCreate.body._id,
-      {
-        title: "updated",
-        ingredients: ["updated"],
-        directions: ["updated"],
-        prepTime: 100,
-        cookTime: 100,
-        servingSize: 100,
-        category: "updated",
-        cuisine: "updated",
-        footNote: ["updated"],
-        difficulty: 100,
-        mainImage: "updated",
-        images: ["updated"],
-        tags: ["updated"]
-      },
-      token
-    );
-    if (resUpdate.error) {
-      console.error(resUpdate.error);
+    const resClone = await clone(resCreate.body._id, token);
+    if (resClone.error) {
+      console.error(resClone.error);
     }
 
-    const recipe = resUpdate.body;
+    const recipe = resClone.body;
 
-    expect(recipe.title).toBe("updated");
-    expect(recipe.totalTime).toBe(200);
-    expect(recipe.ingredients).toEqual(["updated"]);
-    expect(recipe.directions).toEqual(["updated"]);
-    expect(recipe.tags).toEqual(["updated"]);
+    expect(recipe.title).toBe("The Best Shrimp Alfredo");
+    expect(recipe.totalTime).toBe(25);
+    expect(recipe.uid).toBe(testUid);
+    expect(recipe._id).not.toBe(resCreate.body._id);
 
     done();
   });
