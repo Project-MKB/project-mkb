@@ -1,4 +1,5 @@
 import React from 'react';
+import Nav from '../components/global/Nav';
 import Nav2 from '../components/global/Nav2';
 import SearchBar from '../components/global/SearchBar';
 import MainHero from '../components/main/MainHero';
@@ -8,13 +9,18 @@ import Footer from '../components/global/Footer';
 const Main = () => {
     return (
         <div>
-            <Nav2 />
-            <SearchBar />
-            <MainHero />
-            <RecipesListing />
-            <div className="container">
+            <Nav />
+            <div className="container-fluid">
                 <div className="row">
-                    <div className="btn btn-primary">More</div>
+                    <div className="col-md-11">
+                        <MainHero />
+                        <RecipesListing />
+                        <RecipesListing />
+                        <RecipesListing />
+                    </div>
+                    <div className="col-md-1">
+                        <Nav2 />
+                    </div>
                 </div>
             </div>
             <Footer />
