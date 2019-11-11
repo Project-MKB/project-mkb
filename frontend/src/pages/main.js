@@ -1,5 +1,4 @@
 import React from 'react';
-import Nav from '../components/global/Nav';
 import Nav2 from '../components/global/Nav2';
 import SearchBar from '../components/global/SearchBar';
 import MainHero from '../components/main/MainHero';
