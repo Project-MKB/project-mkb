@@ -9,7 +9,7 @@ import Footer from '../components/global/Footer';
 const Main = () => {
     return (
         <div>
-            <Nav />
+            <SearchBar />
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-11">

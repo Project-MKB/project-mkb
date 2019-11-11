@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 
 class Nav2 extends Component {
     render(){
@@ -7,8 +11,14 @@ class Nav2 extends Component {
                 <div className="sidebar-sticky">
                     <ul className="nav flex-column">
                         <li className="nav-item">
-                            <a className="nav-link active" href="/">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            <a className="nav-link" href="/">
+                                <FontAwesomeIcon icon={ faHome } size="2x" />
+                            </a>
+                            <a className="nav-link" href="/">
+                                <FontAwesomeIcon icon={ faUserCog } size="2x" />
+                            </a>
+                            <a className="nav-link" href="/">
+                                <FontAwesomeIcon icon={ faPlusSquare } size="2x" />
                             </a>
                         </li>
                     </ul>
