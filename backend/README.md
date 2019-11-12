@@ -9,10 +9,11 @@
 
 # Instruction to host on Heroku
 
-- cd backend
+- git checkout master
 - heroku login
 - heroku git:remote -a project-mkb
-- git push heroku dev:master (if deploying dev branch)
+- on root, npm run deploy-server
+  ("git subtree push --prefix backend heroku master")
 
 # API Documentation
 
