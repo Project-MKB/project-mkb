@@ -25,6 +25,7 @@
 - [GET /recipes/get/:id](#get-recipesgetid)
 - [POST /recipes/update/:id](#post-recipesupdateid)
 - [DELETE /recipes/delete/:id](#delete-recipesdeleteid)
+- [POST /recipes/clone/:id](#post-recipescloneid)
 
 # Users
 
@@ -194,7 +195,7 @@
 | images: [String]      | array of urls of the images                   |
 | tags: [String]        | will be used for recommendations and search   |
 | rating: Number        | zero at first, will be updated by other users |
-| uid: String           | creator's user id                             |
+| uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
 
@@ -230,7 +231,7 @@
 | footNote: [String]    |                                               |
 | difficulty: Number    |                                               |
 | images: [String]      | array of urls of the images                   |
-| uid: String           | creator's user id                             |
+| uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
 
@@ -266,7 +267,7 @@
 | images: [String]      | array of urls of the images                   |
 | tags: [String]        | will be used for recommendations and search   |
 | rating: Number        | zero at first, will be updated by other users |
-| uid: String           | creator's user id                             |
+| uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
 
@@ -316,7 +317,7 @@
 | images: [String]      | array of urls of the images                   |
 | tags: [String]        | will be used for recommendations and search   |
 | rating: Number        | zero at first, will be updated by other users |
-| uid: String           | creator's user id                             |
+| uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
 
@@ -352,7 +353,43 @@
 | images: [String]      | array of urls of the images                   |
 | tags: [String]        | will be used for recommendations and search   |
 | rating: Number        | zero at first, will be updated by other users |
-| uid: String           | creator's user id                             |
+| uid: String           | user id                                       |
+| createdAt: String     |                                               |
+| updatedAt: String     |                                               |
+
+### Errors:
+
+- auth token is not valid or expired
+
+## POST /recipes/clone/:id
+
+### Request body: (ID of the recipe to clone)
+
+| Property | Description |
+| -------- | ----------- |
+| \_id     | recipe id   |
+
+### Response: (Cloned recipe)
+
+| Property              | Description                                   |
+| --------------------- | --------------------------------------------- |
+| \_id: String          | recipe id                                     |
+| title: String         |                                               |
+| ingredients: [String] |                                               |
+| directions: [String]  |                                               |
+| prepTime: Number      |                                               |
+| cookTime: Number      |                                               |
+| totalTime: Number     | prepTime + cookTime                           |
+| servingSize: Number   |                                               |
+| category: String      |                                               |
+| cuisine: String       |                                               |
+| footNote: [String]    |                                               |
+| difficulty: Number    |                                               |
+| mainImage: String     | url of the image                              |
+| images: [String]      | array of urls of the images                   |
+| tags: [String]        | will be used for recommendations and search   |
+| rating: Number        | zero at first, will be updated by other users |
+| uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
 
