@@ -6,7 +6,7 @@ class SearchBar extends Component {
       <div className="container-fluid">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <input class="form-control form-control-dark" type="text" placeholder="Search" aria-label="Search" />
+          <input className="form-control form-control-dark" type="text" placeholder="Search" aria-label="Search" />
           </div>
         </nav>
       </div>

@@ -26,7 +26,7 @@ class Contact extends Component {
       }
 
       handleSubmit(event) {
-        console.log(this.state.value);
+        console.log(event.target.value);
         event.preventDefault();
       }
 
