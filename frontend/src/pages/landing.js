@@ -1,5 +1,4 @@
 import React from "react";
-
 import Nav from "../components/global/Nav";
 import Header from "../components/main/Header";
 import Features from "../components/main/Features";
