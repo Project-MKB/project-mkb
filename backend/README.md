@@ -99,9 +99,13 @@
 
 ### Request body: (User info to update)
 
-| Property     | Description                           |
-| ------------ | ------------------------------------- |
-| user: Object | all user info (overwrite existing db) |
+| Property              | Description                              |
+| --------------------- | ---------------------------------------- |
+| displayName: String   | if available from google, otherwise null |
+| preferences: [String] | update after questionare                 |
+| photoURL: String      | if available from google, otherwise null |
+| country: String       | update after questionare                 |
+| cuisine: String       | update after questionare                 |
 
 ### Response: (Updated user info)
 
