@@ -7,6 +7,12 @@
 - Week 5 (11/17-11/23): Test backend APIs from frontend UI and bug fix
 - Week 6 (11/24-11/30): Test backend APIs from frontend UI and bug fix
 
+# Instruction to host on Heroku
+
+- heroku login
+- heroku git:remote -a project-mkb
+- git push heroku dev:master (if deploying dev branch)
+
 # API Documentation
 
 # Table of Contents
