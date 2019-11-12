@@ -8,6 +8,7 @@ import InitialPref from "./pages/initialpref";
 import Main from "./pages/main";
 import Details from "./pages/details";
 import PageNotFound from "./pages/404";
+import CreateRecipe from "./pages/createRecipe";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import jwtDecode from "jwt-decode";
@@ -46,6 +47,7 @@ class App extends Component {
             <Route exact path="/onboarding" component={InitialPref} />
             <Route exact path="/main" component={Main} />
             <Route exact path="/details" component={Details} />
+            <Route exact path="/recipe/create" component={CreateRecipe} />
             <Route path="/" component={PageNotFound} />
           </Switch>
         </Router>
