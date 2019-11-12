@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 import Nav from "../components/global/Nav";
 import Header from "../components/landing/Header";
 import Features from "../components/landing/Features";
@@ -14,6 +14,9 @@ const Landing = () => {
     <div>
       <Nav />
       <Signout />
+      <Link to="user/update">
+        <button className="btn btn-info">Update User</button>
+      </Link>
       <Header />
       <Features />
       <About />
