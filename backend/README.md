@@ -9,6 +9,7 @@
 
 # Instruction to host on Heroku
 
+- cd backend
 - heroku login
 - heroku git:remote -a project-mkb
 - git push heroku dev:master (if deploying dev branch)
