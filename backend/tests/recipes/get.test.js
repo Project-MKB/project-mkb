@@ -3,7 +3,7 @@
   1. should return the recipe requested by ID
 */
 
-const { setupDB, request, fbAdmin, fb } = require("../test-setup");
+const { setupDB, request } = require("../test-setup");
 const { getToken, signup, deleteUser } = require("../auth-setup");
 const { calRecRecipes } = require("../../routes/recipes");
 setupDB("recipe-test");

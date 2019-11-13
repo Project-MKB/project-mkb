@@ -7,6 +7,14 @@
 - Week 5 (11/17-11/23): Test backend APIs from frontend UI and bug fix
 - Week 6 (11/24-11/30): Test backend APIs from frontend UI and bug fix
 
+# Instruction to host on Heroku
+
+- git checkout master
+- heroku login
+- heroku git:remote -a project-mkb
+- on root, npm run deploy-server
+  ("git subtree push --prefix backend heroku master")
+
 # API Documentation
 
 # Table of Contents
@@ -25,6 +33,7 @@
 - [GET /recipes/get/:id](#get-recipesgetid)
 - [POST /recipes/update/:id](#post-recipesupdateid)
 - [DELETE /recipes/delete/:id](#delete-recipesdeleteid)
+- [POST /recipes/clone/:id](#post-recipescloneid)
 
 # Users
 
@@ -98,9 +107,13 @@
 
 ### Request body: (User info to update)
 
-| Property     | Description                           |
-| ------------ | ------------------------------------- |
-| user: Object | all user info (overwrite existing db) |
+| Property              | Description                              |
+| --------------------- | ---------------------------------------- |
+| displayName: String   | if available from google, otherwise null |
+| preferences: [String] | update after questionare                 |
+| photoURL: String      | if available from google, otherwise null |
+| country: String       | update after questionare                 |
+| cuisine: String       | update after questionare                 |
 
 ### Response: (Updated user info)
 
@@ -194,7 +207,7 @@
 | images: [String]      | array of urls of the images                   |
 | tags: [String]        | will be used for recommendations and search   |
 | rating: Number        | zero at first, will be updated by other users |
-| uid: String           | creator's user id                             |
+| uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
 
@@ -230,7 +243,7 @@
 | footNote: [String]    |                                               |
 | difficulty: Number    |                                               |
 | images: [String]      | array of urls of the images                   |
-| uid: String           | creator's user id                             |
+| uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
 
@@ -266,7 +279,7 @@
 | images: [String]      | array of urls of the images                   |
 | tags: [String]        | will be used for recommendations and search   |
 | rating: Number        | zero at first, will be updated by other users |
-| uid: String           | creator's user id                             |
+| uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
 
@@ -316,7 +329,7 @@
 | images: [String]      | array of urls of the images                   |
 | tags: [String]        | will be used for recommendations and search   |
 | rating: Number        | zero at first, will be updated by other users |
-| uid: String           | creator's user id                             |
+| uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
 
@@ -352,7 +365,43 @@
 | images: [String]      | array of urls of the images                   |
 | tags: [String]        | will be used for recommendations and search   |
 | rating: Number        | zero at first, will be updated by other users |
-| uid: String           | creator's user id                             |
+| uid: String           | user id                                       |
+| createdAt: String     |                                               |
+| updatedAt: String     |                                               |
+
+### Errors:
+
+- auth token is not valid or expired
+
+## POST /recipes/clone/:id
+
+### Request body: (ID of the recipe to clone)
+
+| Property | Description |
+| -------- | ----------- |
+| \_id     | recipe id   |
+
+### Response: (Cloned recipe)
+
+| Property              | Description                                   |
+| --------------------- | --------------------------------------------- |
+| \_id: String          | recipe id                                     |
+| title: String         |                                               |
+| ingredients: [String] |                                               |
+| directions: [String]  |                                               |
+| prepTime: Number      |                                               |
+| cookTime: Number      |                                               |
+| totalTime: Number     | prepTime + cookTime                           |
+| servingSize: Number   |                                               |
+| category: String      |                                               |
+| cuisine: String       |                                               |
+| footNote: [String]    |                                               |
+| difficulty: Number    |                                               |
+| mainImage: String     | url of the image                              |
+| images: [String]      | array of urls of the images                   |
+| tags: [String]        | will be used for recommendations and search   |
+| rating: Number        | zero at first, will be updated by other users |
+| uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
 

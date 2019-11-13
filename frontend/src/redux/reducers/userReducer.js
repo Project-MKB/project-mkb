@@ -59,6 +59,24 @@ export default (state = initialState, action) => {
         error: action.payload
       };
 
+    case "USER_UPDATE_REQUEST":
+      return {
+        ...state,
+        isLoading: true
+      };
+    case "USER_UPDATE_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        ...action.payload
+      };
+    case "USER_UPDATE_FAILURE":
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload
+      };
+
     case "SET_AUTHENTICATED":
       return {
         ...state,

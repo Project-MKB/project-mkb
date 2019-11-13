@@ -9,11 +9,14 @@ import Main from "./pages/main";
 import Details from "./pages/details";
 import PageNotFound from "./pages/404";
 import CreateRecipe from "./pages/createRecipe";
+import UpdateUser from "./pages/updateUser";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import jwtDecode from "jwt-decode";
 import { signoutUser, getUser } from "./redux/actions/userActions";
 import axios from "axios";
+import AuthenticatedRoute from "./components/main/AuthenticatedRoute";
+import UnauthenticatedRoute from "./components/main/UnauthenticatedRoute";
 
 // see if user is logged in when app is first launched
 // or when browser is refreshed by checking the token stored in localStorage
@@ -32,7 +35,6 @@ if (token) {
   }
 }
 
-// TODO: should create AuthenticatedRoute / UnauthenticatedRoute components
 // AuthenticatedRoute : only allow authenticated user, otherwise redirect to login page (ex. main, details, etc)
 // UnauthenticatedRoute : redirect to main page if user is authenticated (ex. login, register, etc)
 class App extends Component {
@@ -42,12 +44,21 @@ class App extends Component {
         <Router>
           <Switch>
             <Route exact path="/" component={Landing} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
+            <UnauthenticatedRoute exact path="/register" component={Register} />
+            <UnauthenticatedRoute exact path="/login" component={Login} />
             <Route exact path="/onboarding" component={InitialPref} />
             <Route exact path="/main" component={Main} />
             <Route exact path="/details" component={Details} />
-            <Route exact path="/recipe/create" component={CreateRecipe} />
+            <AuthenticatedRoute
+              exact
+              path="/recipe/create"
+              component={CreateRecipe}
+            />
+            <AuthenticatedRoute
+              exact
+              path="/user/update"
+              component={UpdateUser}
+            />
             <Route path="/" component={PageNotFound} />
           </Switch>
         </Router>

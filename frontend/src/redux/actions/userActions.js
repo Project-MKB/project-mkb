@@ -90,6 +90,36 @@ export const signoutUser = () => dispatch => {
   console.log("Successfully signed out");
 };
 
+// update user info
+export const updateUser = (userInfo, history) => async dispatch => {
+  console.log("update user action");
+  dispatch({ type: "USER_UPDATE_REQUEST" });
+
+  try {
+    // call update api
+    const res = await axios.post(
+      "http://localhost:5000/users/update",
+      userInfo
+    );
+
+    dispatch({
+      type: "USER_UPDATE_SUCCESS",
+      payload: res.data
+    });
+
+    alert("User info is successfully updated!");
+    // redirect to home page when login process finishes
+    history.push("/");
+  } catch (e) {
+    const error = e.response.data.error;
+    console.log(error);
+    dispatch({
+      type: "USER_UPDATE_FAILURE",
+      payload: error
+    });
+  }
+};
+
 // save token to local storage to use it later
 // when calling another api that only logged in user can call
 const setAuthorizationHeader = token => {
