@@ -47,8 +47,8 @@ class App extends Component {
             <UnauthenticatedRoute exact path="/register" component={Register} />
             <UnauthenticatedRoute exact path="/login" component={Login} />
             <Route exact path="/onboarding" component={InitialPref} />
-            <Route exact path="/main" component={Main} />
-            <Route exact path="/details" component={Details} />
+            <AuthenticatedRoute exact path="/main" component={Main} />
+            <AuthenticatedRoute exact path="/details" component={Details} />
             <AuthenticatedRoute
               exact
               path="/recipe/create"
