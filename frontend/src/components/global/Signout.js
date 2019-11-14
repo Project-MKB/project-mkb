@@ -4,9 +4,9 @@ import { signoutUser } from "../../redux/actions/userActions";
 
 const Signout = props => {
   return (
-    <div>
-      <button onClick={props.signoutUser}>Sign Out</button>
-    </div>
+    <button className="btn btn-warning" onClick={props.signoutUser}>
+      Sign Out
+    </button>
   );
 };
 

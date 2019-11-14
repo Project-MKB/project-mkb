@@ -3,7 +3,7 @@
   1. should update recipe successfully
 */
 
-const { setupDB, request, fbAdmin, fb } = require("../test-setup");
+const { setupDB, request } = require("../test-setup");
 const { getToken, signup, deleteUser } = require("../auth-setup");
 setupDB("recipe-test");
 

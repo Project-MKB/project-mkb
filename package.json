@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy-server": "git subtree push --prefix backend heroku master"
+    "start": "concurrently \"cd frontend && npm start\" \"cd backend && npm run dev\""
   },
   "repository": {
     "type": "git",
