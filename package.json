@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "name": "project-mkb",
     "version": "1.0.0",
     "description": "",
@@ -19,3 +20,28 @@
     },
     "homepage": "https://github.com/sdymj84/project-mkb#readme"
   }
+=======
+  "name": "project-mkb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd frontend && npm start\" \"cd backend && npm run dev\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdymj84/project-mkb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sdymj84/project-mkb/issues"
+  },
+  "homepage": "https://github.com/sdymj84/project-mkb#readme",
+  "dependencies": {
+    "dayjs": "^1.8.16",
+    "jwt-decode": "^2.2.0"
+  }
+}
+>>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405

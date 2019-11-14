@@ -5,6 +5,7 @@
   3. should throw error when data type is wrong
 */
 
+<<<<<<< HEAD
 const { setupDB, request, fbAdmin, fb } = require('../test-setup')
 setupDB('updateUser-test')
 
@@ -50,6 +51,22 @@ describe('Update user info test', () => {
 
   const update = async (user, token) => {
     return await request.post('/users/update')
+=======
+const { setupDB, request } = require("../test-setup");
+const { getToken, signup, deleteUser } = require("../auth-setup");
+setupDB("updateUser-test");
+
+describe("Update user info test", () => {
+  let testUid = "";
+  beforeAll(async () => {
+    testUid = await signup();
+  });
+  afterAll(() => deleteUser(testUid));
+
+  const update = async (user, token) => {
+    return await request
+      .post("/users/update")
+>>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
       .send({
         displayName: user.displayName,
         photoURL: user.photoURL,
@@ -57,6 +74,7 @@ describe('Update user info test', () => {
         country: user.country,
         cuisine: user.cuisine
       })
+<<<<<<< HEAD
       .set('Authorization', 'Bearer ' + token)
   }
 
@@ -88,3 +106,34 @@ describe('Update user info test', () => {
 })
 
 
+=======
+      .set("Authorization", "Bearer " + token);
+  };
+
+  test("Should update user successfully", async done => {
+    const token = await getToken();
+    const res = await update(
+      {
+        displayName: "Test Name",
+        photoURL: "https://picsum.photos/100",
+        preferences: ["mexican", "spicy", "vegiterian"],
+        country: "United States",
+        cuisine: "Korean"
+      },
+      token
+    );
+
+    const updatedUser = res.body;
+    expect(updatedUser.email).toBe("test99@test.com");
+    expect(updatedUser.displayName).toBe("Test Name");
+    expect(updatedUser.photoURL).toBe("https://picsum.photos/100");
+    expect(updatedUser.preferences.sort()).toEqual(
+      ["mexican", "spicy", "vegiterian"].sort()
+    );
+    expect(updatedUser.country).toBe("United States");
+    expect(updatedUser.cuisine).toBe("Korean");
+
+    done();
+  });
+});
+>>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
