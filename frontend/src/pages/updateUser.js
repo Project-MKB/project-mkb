@@ -39,30 +39,36 @@ export class UpdateUser extends Component {
     });
   };
 
-  // Add badge when pressing add button
-  handlePrefAdd = () => {
-    const newPref = this.state.preference.trim().toLowerCase();
-    if (newPref) {
+  addItemToArr = (name, item) => {
+    const newItem = item.trim().toLowerCase();
+    if (newItem) {
       this.setState(prevState => {
-        if (prevState.preferences.indexOf(newPref) > -1) {
-          alert("Tag already exists");
+        if (prevState[name].indexOf(newItem) > -1) {
+          alert(`${item} already exists`);
           return prevState;
         } else {
           return {
-            preferences: [...prevState.preferences, newPref]
+            [name]: [...prevState[name], newItem]
           };
         }
       });
     }
   };
 
-  // Remove badge when pressing x button on the badge
-  handlePrefRemove = prefToRemove => {
+  removeItemFromArr = (name, itemToRemove) => {
     this.setState(prevState => {
       return {
-        preferences: prevState.preferences.filter(pref => pref !== prefToRemove)
+        [name]: prevState[name].filter(item => item !== itemToRemove)
       };
     });
+  };
+
+  handlePrefAdd = () => {
+    this.addItemToArr("preferences", this.state.preference);
+  };
+
+  handlePrefRemove = itemToRemove => {
+    this.removeItemFromArr("preferences", itemToRemove);
   };
 
   handleSubmit = e => {
@@ -92,29 +98,27 @@ export class UpdateUser extends Component {
 
               <div className="form-group">
                 <label htmlFor="preference">Preference</label>
-                <div>
-                  <input
-                    type="text"
-                    className="form-control pref"
-                    id="preference"
-                    onChange={this.handleChange}
-                    value={this.state.preference}
-                  />
-                  <button
-                    type="button"
-                    onClick={this.handlePrefAdd}
-                    className="btn btn-outline-success"
-                  >
-                    ADD
-                  </button>
-                </div>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="preference"
+                  onChange={this.handleChange}
+                  value={this.state.preference}
+                />
+                <button
+                  type="button"
+                  onClick={this.handlePrefAdd}
+                  className="btn btn-outline-success"
+                >
+                  ADD
+                </button>
               </div>
 
               {this.state.preferences.map((pref, i) => (
                 <Badge
                   key={i}
-                  pref={pref}
-                  handlePrefRemove={this.handlePrefRemove}
+                  item={pref}
+                  handleItemRemove={this.handlePrefRemove}
                 />
               ))}
 
@@ -157,7 +161,4 @@ const mapDispatchToProps = {
   updateUser
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UpdateUser);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateUser);
