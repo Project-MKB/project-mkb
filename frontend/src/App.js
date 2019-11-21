@@ -54,7 +54,7 @@ class App extends Component {
             <UnauthenticatedRoute exact path="/login" component={Login} />
             <Route exact path="/onboarding" component={InitialPref} />
             <AuthenticatedRoute exact path="/main" component={Main} />
-            <AuthenticatedRoute exact path="/details" component={Details} />
+            <AuthenticatedRoute exact path="/details/:id" component={Details} />
             <AuthenticatedRoute
               exact
               path="/recipe/create"

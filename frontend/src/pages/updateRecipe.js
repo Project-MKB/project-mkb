@@ -3,7 +3,6 @@ import Badge from "../components/global/Badge";
 import LoadingButton from "../components/global/LoadingButton";
 import { connect } from "react-redux";
 import { getRecipe, updateRecipe } from "../redux/actions/recipeActions";
-import checkWhyRerender from "../util/checkWhyRerender";
 
 export class UpdateRecipe extends Component {
   state = {
