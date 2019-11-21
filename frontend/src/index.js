@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.scss';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-=======
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import React from "react";
@@ -14,7 +5,6 @@ import ReactDOM from "react-dom";
 import "./index.scss";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
