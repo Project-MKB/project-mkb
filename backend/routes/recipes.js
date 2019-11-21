@@ -19,7 +19,7 @@ router.post("/add", fbAuth, async (req, res) => {
     ...newRecipe,
     rating: 0,
     uid: req.user.uid,
-    totalTime: newRecipe.prepTime + newRecipe.cookTime
+    totalTime: parseInt(newRecipe.prepTime) + parseInt(newRecipe.cookTime)
   });
 
   try {
@@ -92,25 +92,38 @@ router.post("/update/:id", fbAuth, async (req, res) => {
     return res.status(400).json({ error });
   }
 
+  /* 
+    - check if the user's uid is equal to the recipe's uid
+    - if equal
+      - update the recipe without cloning
+    - else
+      - clone the recipe and update the cloned recipe
+        - call clone api
+        - get response with the cloned recipe (DR - Duplicated Recipe)
+        - get id from the DR
+        - update the DR
+  */
+
   try {
     const recipe = await Recipe.findById(req.params.id);
 
-    // if recipe's uid doesn't match current user uid, return error
+    // if recipe's uid doesn't match current user uid,
+    // clone the recipe and proceed to update
+    let clonedRecipe;
     if (recipe.uid !== req.user.uid) {
-      return res.status(403).json({
-        error: {
-          code: "auth/unauthorized",
-          message:
-            "You cannot update other people's recipes. Please clone the recipe first and update."
-        }
-      });
+      // cloning
+      clonedRecipe = await Recipe.findById(recipe._id);
+      clonedRecipe._id = mongoose.Types.ObjectId();
+      clonedRecipe.isNew = true;
+      clonedRecipe.uid = req.user.uid;
+      await clonedRecipe.save();
     }
 
     const updatedRecipe = await Recipe.findByIdAndUpdate(
-      req.params.id,
+      clonedRecipe ? clonedRecipe._id : req.params.id,
       {
         ...newRecipe,
-        totalTime: newRecipe.prepTime + newRecipe.cookTime
+        totalTime: parseInt(newRecipe.prepTime) + parseInt(newRecipe.cookTime)
       },
       {
         new: true,
