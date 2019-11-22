@@ -54,6 +54,7 @@ export const createRecipe = (newRecipe, history) => async dispatch => {
 export const updateRecipe = (id, recipe, image, history) => async dispatch => {
   dispatch({ type: "RECIPE_UPDATE_REQUEST" });
 
+  console.log(recipe);
   try {
     // call update recipe api
     const res = await axios.post(

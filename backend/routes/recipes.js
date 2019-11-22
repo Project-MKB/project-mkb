@@ -118,12 +118,10 @@ router.post("/update/:id", fbAuth, async (req, res) => {
       clonedRecipe.isNew = true;
       clonedRecipe.uid = req.user.uid;
       await clonedRecipe.save();
-    } else {
-      clonedRecipe = { ...recipe };
     }
 
     const updatedRecipe = await Recipe.findByIdAndUpdate(
-      clonedRecipe._id,
+      clonedRecipe ? clonedRecipe._id : req.params.id,
       {
         ...newRecipe,
         totalTime: parseInt(newRecipe.prepTime) + parseInt(newRecipe.cookTime)
