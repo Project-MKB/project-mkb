@@ -4,6 +4,7 @@ const User = require("../models/user.model");
 const fbAuth = require("../util/fbAuth");
 const { validateRecipeData } = require("../util/validators");
 const mongoose = require("mongoose");
+const admin = require("firebase-admin");
 
 // add recipe
 router.post("/add", fbAuth, async (req, res) => {
@@ -117,10 +118,12 @@ router.post("/update/:id", fbAuth, async (req, res) => {
       clonedRecipe.isNew = true;
       clonedRecipe.uid = req.user.uid;
       await clonedRecipe.save();
+    } else {
+      clonedRecipe = { ...recipe };
     }
 
     const updatedRecipe = await Recipe.findByIdAndUpdate(
-      clonedRecipe ? clonedRecipe._id : req.params.id,
+      clonedRecipe._id,
       {
         ...newRecipe,
         totalTime: parseInt(newRecipe.prepTime) + parseInt(newRecipe.cookTime)
@@ -177,6 +180,70 @@ router.post("/clone/:id", fbAuth, async (req, res) => {
     console.error(error);
     return res.status(500).json({ error });
   }
+});
+
+// upload recipe image (main image)
+router.post("/uploadImage/:id", fbAuth, async (req, res) => {
+  const Busboy = require("busboy");
+  const path = require("path");
+  const os = require("os");
+  const fs = require("fs");
+  const uuidv1 = require("uuid/v1");
+
+  const busboy = new Busboy({ headers: req.headers });
+
+  let imageToBeUploaded = {};
+  let imageFileName;
+
+  busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
+    console.log(fieldname, file, filename, encoding, mimetype);
+    if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
+      return res.status(400).json({
+        error: {
+          code: "file-type-error",
+          message: "Wrong file type submitted"
+        }
+      });
+    }
+    // my.image.png => ['my', 'image', 'png']
+    const imageExtension = filename.split(".")[filename.split(".").length - 1];
+    // 32756238461724837.png
+    imageFileName = `${Math.round(
+      Math.random() * 1000000000000
+    ).toString()}.${imageExtension}`;
+    const filepath = path.join(os.tmpdir(), imageFileName);
+    imageToBeUploaded = { filepath, mimetype };
+    file.pipe(fs.createWriteStream(filepath));
+  });
+  busboy.on("finish", async () => {
+    try {
+      await admin
+        .storage()
+        .bucket()
+        .upload(imageToBeUploaded.filepath, {
+          resumable: false,
+          metadata: {
+            metadata: {
+              contentType: imageToBeUploaded.mimetype
+            }
+          }
+        });
+      const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.STORAGE_BUCKET}/o/${imageFilename}?alt=media`;
+      await Recipe.findByIdAndUpdate(req.params.id, {
+        mainImage: imageUrl
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        error: {
+          code: "image-upload-error",
+          message:
+            "Error while uploading image either on Firebase Storage or MongoDB."
+        }
+      });
+    }
+  });
+  busboy.end(req.rawBody);
 });
 
 // get list of recipes that matches userPref
