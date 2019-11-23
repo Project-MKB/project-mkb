@@ -23,15 +23,32 @@ export const getRecipe = id => async dispatch => {
 };
 
 // create recipe action
-export const createRecipe = (newRecipe, history) => async dispatch => {
+export const createRecipe = (newRecipe, image, history) => async dispatch => {
   dispatch({ type: "RECIPE_CREATE_REQUEST" });
 
   try {
+    // if image is added, set isImage true
+    let isImage;
+    if (typeof image === "object" && image !== null) {
+      isImage = true;
+    }
+
     // call create recipe api
+    if (isImage) {
+      newRecipe.mainImage = "";
+    }
     const res = await axios.post(
       "http://localhost:5000/recipes/add",
       newRecipe
     );
+
+    // call upload image api when user adds image
+    if (isImage) {
+      await axios.post(
+        `http://localhost:5000/recipes/uploadImage/${res.data._id}`,
+        image
+      );
+    }
 
     dispatch({
       type: "RECIPE_CREATE_SUCCESS",

@@ -36,6 +36,10 @@ class Nav extends Component {
                 </a>
               </li>
               <li className="nav-item">
+                {/* When pressing edit icon, it redirects to recipe update form page with the recipe id */}
+                <Link to={"/recipe/create"}>Create Recipe</Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to="/login">
                   Log In
                 </Link>

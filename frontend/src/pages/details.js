@@ -37,12 +37,7 @@ class Details extends React.Component {
 
               {/* When pressing edit icon, it redirects to recipe update form page with the recipe id */}
               <Link to={`/recipe/update/${recipe._id}`}>
-                <button
-                  className="btn btn-success"
-                  onClick={this.handleRecipeUpdate}
-                >
-                  Update Recipe
-                </button>
+                <button className="btn btn-success">Update Recipe</button>
               </Link>
 
               <Gallery />

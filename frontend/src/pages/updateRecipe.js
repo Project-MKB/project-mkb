@@ -32,7 +32,6 @@ export class UpdateRecipe extends Component {
       servingSize: recipe.servingSize || 0,
       category: recipe.category || "",
       cuisine: recipe.cuisine || "",
-      footNote: recipe.footNote || "",
       difficulty: recipe.difficulty || 0,
       mainImage: recipe.mainImage || "",
       tags: recipe.tags || []
