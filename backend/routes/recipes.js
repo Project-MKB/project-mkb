@@ -42,6 +42,17 @@ router.get("/get/:id", fbAuth, async (req, res) => {
   }
 });
 
+// list all recipes
+router.get("/list", fbAuth, async (req, res) => {
+  try {
+    const recipes = await Recipe.find();
+    return res.status(200).json(recipes);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error });
+  }
+});
+
 // get recommended recipes
 router.get("/listRecs", fbAuth, async (req, res) => {
   // search recipes from db that matches user preferences
