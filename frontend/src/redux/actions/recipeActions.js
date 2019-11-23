@@ -54,7 +54,6 @@ export const createRecipe = (newRecipe, history) => async dispatch => {
 export const updateRecipe = (id, recipe, image, history) => async dispatch => {
   dispatch({ type: "RECIPE_UPDATE_REQUEST" });
 
-  console.log(recipe);
   try {
     // call update recipe api
     const res = await axios.post(
@@ -63,10 +62,10 @@ export const updateRecipe = (id, recipe, image, history) => async dispatch => {
     );
 
     // call upload image api
-    // const resImage = await axios.post(
-    //   `http://localhost:5000/recipes/uploadImage/${id}`,
-    //   image
-    // );
+    const resImage = await axios.post(
+      `http://localhost:5000/recipes/uploadImage/${id}`,
+      image
+    );
 
     dispatch({
       type: "RECIPE_UPDATE_SUCCESS",

@@ -183,18 +183,14 @@ router.post("/clone/:id", fbAuth, async (req, res) => {
 // upload recipe image (main image)
 router.post("/uploadImage/:id", fbAuth, async (req, res) => {
   const Busboy = require("busboy");
-  const path = require("path");
   const os = require("os");
-  const fs = require("fs");
-  const uuidv1 = require("uuid/v1");
-
+  const path = require("path");
   const busboy = new Busboy({ headers: req.headers });
 
-  let imageToBeUploaded = {};
-  let imageFileName;
-
+  let filepath;
+  let test = 0;
   busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
-    console.log(fieldname, file, filename, encoding, mimetype);
+    test = 1;
     if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
       return res.status(400).json({
         error: {
@@ -203,44 +199,16 @@ router.post("/uploadImage/:id", fbAuth, async (req, res) => {
         }
       });
     }
-    // my.image.png => ['my', 'image', 'png']
-    const imageExtension = filename.split(".")[filename.split(".").length - 1];
-    // 32756238461724837.png
-    imageFileName = `${Math.round(
-      Math.random() * 1000000000000
-    ).toString()}.${imageExtension}`;
-    const filepath = path.join(os.tmpdir(), imageFileName);
-    imageToBeUploaded = { filepath, mimetype };
-    file.pipe(fs.createWriteStream(filepath));
+
+    console.log("haha");
+    filepath = path.join(os.tmpdir(), "image.jpg");
   });
-  busboy.on("finish", async () => {
-    try {
-      await admin
-        .storage()
-        .bucket()
-        .upload(imageToBeUploaded.filepath, {
-          resumable: false,
-          metadata: {
-            metadata: {
-              contentType: imageToBeUploaded.mimetype
-            }
-          }
-        });
-      const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.STORAGE_BUCKET}/o/${imageFilename}?alt=media`;
-      await Recipe.findByIdAndUpdate(req.params.id, {
-        mainImage: imageUrl
-      });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        error: {
-          code: "image-upload-error",
-          message:
-            "Error while uploading image either on Firebase Storage or MongoDB."
-        }
-      });
-    }
+  console.log(test);
+
+  busboy.on("finish", () => {
+    res.status(200).json({ message: "Image uploaded successfully " });
   });
+
   busboy.end(req.rawBody);
 });
 
