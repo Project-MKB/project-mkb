@@ -6,6 +6,10 @@ const { validateRecipeData } = require("../util/validators");
 const mongoose = require("mongoose");
 const admin = require("firebase-admin");
 
+const Busboy = require("busboy");
+const os = require("os");
+const path = require("path");
+
 // add recipe
 router.post("/add", fbAuth, async (req, res) => {
   let newRecipe = req.body;
@@ -181,35 +185,31 @@ router.post("/clone/:id", fbAuth, async (req, res) => {
 });
 
 // upload recipe image (main image)
-router.post("/uploadImage/:id", fbAuth, async (req, res) => {
-  const Busboy = require("busboy");
-  const os = require("os");
-  const path = require("path");
+router.post("/uploadImage/:id", fbAuth, (req, res) => {
   const busboy = new Busboy({ headers: req.headers });
 
-  let filepath;
-  let test = 0;
-  busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
-    test = 1;
-    if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
-      return res.status(400).json({
-        error: {
-          code: "file-type-error",
-          message: "Wrong file type submitted"
-        }
-      });
-    }
-
-    console.log("haha");
-    filepath = path.join(os.tmpdir(), "image.jpg");
+  busboy.on("field", () => {
+    console.log("field");
   });
-  console.log(test);
+
+  busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
+    // if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
+    //   return res.status(400).json({
+    //     error: {
+    //       code: "file-type-error",
+    //       message: "Wrong file type submitted"
+    //     }
+    //   });
+    // }
+    console.log("Finally file!!");
+  });
 
   busboy.on("finish", () => {
+    console.log("finish");
     res.status(200).json({ message: "Image uploaded successfully " });
   });
 
-  busboy.end(req.rawBody);
+  busboy.end();
 });
 
 // get list of recipes that matches userPref
