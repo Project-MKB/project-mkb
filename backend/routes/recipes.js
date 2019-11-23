@@ -6,10 +6,6 @@ const { validateRecipeData } = require("../util/validators");
 const mongoose = require("mongoose");
 const admin = require("firebase-admin");
 
-const Busboy = require("busboy");
-const os = require("os");
-const path = require("path");
-
 // add recipe
 router.post("/add", fbAuth, async (req, res) => {
   let newRecipe = req.body;
@@ -186,30 +182,57 @@ router.post("/clone/:id", fbAuth, async (req, res) => {
 
 // upload recipe image (main image)
 router.post("/uploadImage/:id", fbAuth, (req, res) => {
+  const Busboy = require("busboy");
+  const os = require("os");
+  const path = require("path");
+  const uuidv1 = require("uuid/v1");
+  const fs = require("fs");
   const busboy = new Busboy({ headers: req.headers });
 
-  busboy.on("field", () => {
-    console.log("field");
-  });
+  let imageToBeUploaded = {};
+  let imageFileName;
 
   busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
-    // if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
-    //   return res.status(400).json({
-    //     error: {
-    //       code: "file-type-error",
-    //       message: "Wrong file type submitted"
-    //     }
-    //   });
-    // }
-    console.log("Finally file!!");
+    if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
+      return res.status(400).json({
+        error: {
+          code: "file-type-error",
+          message: "Wrong file type submitted"
+        }
+      });
+    }
+
+    imageFileName = `${Date.now()}_${filename}`;
+    const filepath = path.join(os.tmpdir(), imageFileName);
+    imageToBeUploaded = { filepath, mimetype };
+    file.pipe(fs.createWriteStream(filepath));
+
+    file.on("data", function(data) {});
+    file.on("end", function() {});
   });
 
-  busboy.on("finish", () => {
-    console.log("finish");
-    res.status(200).json({ message: "Image uploaded successfully " });
+  busboy.on("finish", async () => {
+    await admin
+      .storage()
+      .bucket()
+      .upload(imageToBeUploaded.filepath, {
+        resumable: false,
+        metadata: {
+          metadata: {
+            contentType: imageToBeUploaded.mimetype
+          }
+        }
+      });
+    const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.STORAGE_BUCKET}/o/${imageFileName}?alt=media`;
+    await Recipe.findByIdAndUpdate(
+      req.params.id,
+      { mainImage: imageUrl },
+      { useFindAndModify: false }
+    );
+    return res.status(200).json({ message: "Image uploaded successfully " });
   });
 
-  busboy.end();
+  req.pipe(busboy);
 });
 
 // get list of recipes that matches userPref
