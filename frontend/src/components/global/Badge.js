@@ -15,12 +15,12 @@ const styles = {
 const Badge = props => {
   return (
     <span style={styles.badge} className="badge badge-success">
-      {props.pref}
+      {props.item}
       <button
         type="button"
         style={styles.xBtn}
         className="btn btn-outline-light"
-        onClick={() => props.handlePrefRemove(props.pref)}
+        onClick={() => props.handleItemRemove(props.item)}
       >
         X
       </button>

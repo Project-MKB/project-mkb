@@ -37,6 +37,7 @@ class App extends Component {
       </Router>
 =======
 import PageNotFound from "./pages/404";
+import CreateRecipe from "./pages/createRecipe";
 import UpdateUser from "./pages/updateUser";
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -75,8 +76,13 @@ class App extends Component {
             <UnauthenticatedRoute exact path="/register" component={Register} />
             <UnauthenticatedRoute exact path="/login" component={Login} />
             <Route exact path="/onboarding" component={InitialPref} />
-            <Route exact path="/main" component={Main} />
-            <Route exact path="/details" component={Details} />
+            <AuthenticatedRoute exact path="/main" component={Main} />
+            <AuthenticatedRoute exact path="/details" component={Details} />
+            <AuthenticatedRoute
+              exact
+              path="/recipe/create"
+              component={CreateRecipe}
+            />
             <AuthenticatedRoute
               exact
               path="/user/update"
