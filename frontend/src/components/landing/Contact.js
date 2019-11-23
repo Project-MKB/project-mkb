@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
 class Contact extends Component {
-<<<<<<< HEAD
-=======
     constructor(props){
         super(props);
         this.state = {
@@ -32,7 +30,6 @@ class Contact extends Component {
         event.preventDefault();
       }
 
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
     render() {
         return(
             <div className="container-fluid" id="contact">
@@ -44,24 +41,6 @@ class Contact extends Component {
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam quaerat maiores recusandae excepturi, eius temporibus totam odit obcaecati autem impedit eos dolorum reiciendis eum consectetur, fuga sed facilis in exercitationem.</p>
                     </div>
                     <div className="col-12 col-md-6">
-<<<<<<< HEAD
-                        <form>
-                            <div className="form-group">
-                                <label htmlFor="exampleFormControlInput1">Email address</label>
-                                <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleFormControlInput1">First Name</label>
-                                <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="John" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleFormControlInput1">Last Name</label>
-                                <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Roberts" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleFormControlTextarea1">Message</label>
-                                <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-=======
                         <form onSubmit={this.handleSubmit}>
                             <div className="form-group">
                                 <label htmlFor="exampleFormControlInput1">Email address</label>
@@ -78,7 +57,6 @@ class Contact extends Component {
                             <div className="form-group">
                                 <label htmlFor="exampleFormControlTextarea1">Message</label>
                                 <textarea className="form-control" id="exampleFormControlTextarea1" rows="3" name="message" onChange={this.handleInputChange.bind(this)} value={this.state.message}></textarea>
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
                             </div>
                             <button type="submit" className="btn btn-primary">Submit</button>
                         </form>

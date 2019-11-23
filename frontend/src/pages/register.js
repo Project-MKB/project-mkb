@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-
-const Register = () => <h1>This is the Register page</h1>;
-
-export default Register;
-=======
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { registerUser } from "../redux/actions/userActions";
@@ -114,4 +107,3 @@ export default connect(
   mapStateToProps,
   mapActionsToProps
 )(Register);
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405

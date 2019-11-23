@@ -1,10 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
-
-const Main = () => <h1>This is the Main page</h1>;
-
-export default Main;
-=======
 import Nav2 from '../components/global/Nav2';
 import SearchBar from '../components/global/SearchBar';
 import Hero from '../components/global/Hero';
@@ -37,4 +31,3 @@ const Main = () => {
 }
 
 export default Main;
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405

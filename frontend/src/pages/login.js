@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-
-const Login = () => <h1>This is the Login page</h1>;
-
-export default Login;
-=======
 import React, { Component } from "react";
 import Nav from "../components/global/Footer";
 import { connect } from "react-redux";
@@ -113,4 +106,3 @@ export default connect(
   mapStateToProps,
   mapActionsToProps
 )(Login);
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405

@@ -1,12 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-<<<<<<< HEAD
-import { faInstagram } from '@fortawesome/free-brands-svg-icons';
-import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
-import { faTwitter } from '@fortawesome/free-brands-svg-icons';
-=======
 import { faInstagram, faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
 
 const Footer = () => {
     return(
@@ -25,8 +19,4 @@ const Footer = () => {
     );
 }
 
-<<<<<<< HEAD
 export default Footer;
-=======
-export default Footer;
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
