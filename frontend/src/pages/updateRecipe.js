@@ -75,7 +75,7 @@ export class UpdateRecipe extends Component {
     e.preventDefault();
     this.props.updateRecipe(
       this.props.match.params.id,
-      { ...this.state, mainImage: "" },
+      this.state,
       this.state.mainImage,
       this.props.history
     );
@@ -268,6 +268,15 @@ export class UpdateRecipe extends Component {
 
               <div className="form-group">
                 <label htmlFor="mainImage">Image</label>
+                {recipe.mainImage && (
+                  <div>
+                    <img
+                      src={recipe.mainImage}
+                      alt="recipe"
+                      className="img-thumbnail"
+                    />
+                  </div>
+                )}
                 <div>
                   <input
                     type="file"
