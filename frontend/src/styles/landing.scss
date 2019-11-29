@@ -1,0 +1,43 @@
+.jumbotron { 
+    background-image: url(../images/landing-hero.jpg);
+    background-size: cover;
+    position: relative;
+    z-index: -2;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.overlay {
+    opacity: 0.7;
+    background-color: $dkgray;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+#header .container {
+    position: absolute;
+    top: 40%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    color: #fff;
+}
+
+// About 
+.about-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+#features {
+    background-color: #000;
+    color: #fff;
+}
+#features img {
+    max-height: 600px
+}

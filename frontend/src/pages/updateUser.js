@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateUser } from "../redux/actions/userActions";
-import "./updateUser.scss";
 import Badge from "../components/global/Badge";
 import LoadingButton from "../components/global/LoadingButton";
 
