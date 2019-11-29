@@ -4,23 +4,19 @@ const Schema = mongoose.Schema;
 
 const recipeSchema = new Schema(
   {
-    // TODO: Need to decide what are required
     title: { type: String, required: true },
-    ingredients: [String],
-    directions: [String],
-    prepTime: Number,
-    cookTime: Number,
-    totalTime: Number,
-    servingSize: Number,
-    category: String,
-    cuisine: String,
-    footNote: [String],
-    rating: Number,
-    difficulty: Number,
-    mainImage: String,
-    images: [String],
+    ingredients: { type: [String], required: true },
+    directions: { type: [String], required: true },
+    prepTime: { type: Number, required: true },
+    cookTime: { type: Number, required: true },
+    totalTime: { type: Number, required: true },
+    servingSize: { type: Number, required: true },
+    category: { type: String, required: true },
+    cuisine: { type: String, required: true },
+    difficulty: { type: Number, required: true },
+    mainImage: { type: String, required: true },
     tags: [String],
-    uid: String
+    uid: { type: String, required: true }
   },
   {
     timestamps: true

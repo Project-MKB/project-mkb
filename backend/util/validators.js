@@ -98,11 +98,6 @@ exports.validateRecipeData = recipe => {
     error.message = "Please add main image.";
   }
 
-  if (recipe.tags.length === 0) {
-    error.code = "recipe/empty-tags";
-    error.message = "Recipe need at least one tag.";
-  }
-
   return {
     error,
     valid: Object.keys(error).length === 0 ? true : false

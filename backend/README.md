@@ -30,7 +30,6 @@
 
 - [POST /recipes/add](#post-recipesadd)
 - [GET /recipes/listRecs](#get-recipeslistrecs)
-- [GET /recipes/list](#get-recipeslist)
 - [GET /recipes/get/:id](#get-recipesgetid)
 - [POST /recipes/update/:id](#post-recipesupdateid)
 - [DELETE /recipes/delete/:id](#delete-recipesdeleteid)
@@ -208,42 +207,6 @@
 | images: [String]      | array of urls of the images                   |
 | tags: [String]        | will be used for recommendations and search   |
 | rating: Number        | zero at first, will be updated by other users |
-| uid: String           | user id                                       |
-| createdAt: String     |                                               |
-| updatedAt: String     |                                               |
-
-### Errors:
-
-- auth token is not valid or expired
-
-## GET /recipes/list
-
-### Request body: (N/A)
-
-| Property | Description |
-| -------- | ----------- |
-| N/A      | N/A         |
-
-### Response: (Array of recommended recipes)
-
-| Property              | Description                                   |
-| --------------------- | --------------------------------------------- |
-| \_id: String          | recipe id                                     |
-| title: String         |                                               |
-| mainImage: String     | url of the image                              |
-| tags: [String]        | will be used for recommendations and search   |
-| rating: Number        | zero at first, will be updated by other users |
-| ingredients: [String] |                                               |
-| directions: [String]  |                                               |
-| prepTime: Number      |                                               |
-| cookTime: Number      |                                               |
-| totalTime: Number     | prepTime + cookTime                           |
-| servingSize: Number   |                                               |
-| category: String      |                                               |
-| cuisine: String       |                                               |
-| footNote: [String]    |                                               |
-| difficulty: Number    |                                               |
-| images: [String]      | array of urls of the images                   |
 | uid: String           | user id                                       |
 | createdAt: String     |                                               |
 | updatedAt: String     |                                               |
