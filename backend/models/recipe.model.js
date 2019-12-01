@@ -14,7 +14,7 @@ const recipeSchema = new Schema(
     category: { type: String, required: true },
     cuisine: { type: String, required: true },
     difficulty: { type: Number, required: true },
-    mainImage: { type: String, required: true },
+    mainImage: { type: String },
     tags: [String],
     uid: { type: String, required: true }
   },

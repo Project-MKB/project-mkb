@@ -16,10 +16,8 @@ export class UpdateRecipe extends Component {
     servingSize: 0,
     category: "",
     cuisine: "",
-    footNote: "",
     difficulty: 0,
     mainImage: "",
-    images: [],
     tag: "",
     tags: []
   };
@@ -34,10 +32,8 @@ export class UpdateRecipe extends Component {
       servingSize: recipe.servingSize || 0,
       category: recipe.category || "",
       cuisine: recipe.cuisine || "",
-      footNote: recipe.footNote || "",
       difficulty: recipe.difficulty || 0,
       mainImage: recipe.mainImage || "",
-      images: recipe.images || [],
       tags: recipe.tags || []
     });
   };
@@ -67,11 +63,19 @@ export class UpdateRecipe extends Component {
     });
   };
 
+  handleImageChange = e => {
+    const image = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", image, image.name);
+    this.setState({ mainImage: formData });
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.updateRecipe(
       this.props.match.params.id,
       this.state,
+      this.state.mainImage,
       this.props.history
     );
   };
@@ -251,17 +255,6 @@ export class UpdateRecipe extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="footNote">Foot Notes</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="footNote"
-                  onChange={this.handleChange}
-                  value={this.state.footNote}
-                />
-              </div>
-
-              <div className="form-group">
                 <label htmlFor="difficulty">Difficulty</label>
                 <input
                   type="text"
@@ -273,14 +266,23 @@ export class UpdateRecipe extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="mainImage">Main Image</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="mainImage"
-                  onChange={this.handleChange}
-                  value={this.state.mainImage}
-                />
+                <label htmlFor="mainImage">Image</label>
+                {recipe.mainImage && (
+                  <div>
+                    <img
+                      src={recipe.mainImage}
+                      alt="recipe"
+                      className="img-thumbnail"
+                    />
+                  </div>
+                )}
+                <div>
+                  <input
+                    type="file"
+                    id="mainImage"
+                    onChange={this.handleImageChange}
+                  />
+                </div>
               </div>
 
               {/* Not included the part of adding multiple images for now */}

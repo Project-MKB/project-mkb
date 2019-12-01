@@ -12,7 +12,8 @@ fbAdmin.initializeApp({
     token_uri: process.env.token_uri,
     auth_provider_x509_cert_url: process.env.auth_provider_x509_cert_url,
     client_x509_cert_url: process.env.client_x509_cert_url
-  })
+  }),
+  storageBucket: "project-mkb.appspot.com"
 });
 
 module.exports = fbAdmin;

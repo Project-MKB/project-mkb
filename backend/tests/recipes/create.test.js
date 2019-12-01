@@ -33,14 +33,9 @@ describe("Create recipe test", () => {
         servingSize: 3,
         category: "entry",
         cuisine: "italy",
-        footNote: ["use peeled shrimp", "be careful not to burn your house"],
         difficulty: 2,
         mainImage:
           "https://firebasestorage.googleapis.com/v0/b/project-mkb.appspot.com/o/shrimp-alfredo2.jpg?alt=media&token=d202d3e6-9d73-41ed-a4c3-1490e455998e",
-        images: [
-          "https://firebasestorage.googleapis.com/v0/b/project-mkb.appspot.com/o/shrimp-alfredo.jpg?alt=media&token=064dd89d-9a63-471b-b964-da882f2cdc7b",
-          "https://firebasestorage.googleapis.com/v0/b/project-mkb.appspot.com/o/antman.png?alt=media&token=6af2570a-33fb-4f5c-ad47-f90a75cf2a86"
-        ],
         tags: ["italy", "shrimp", "creamy"]
       },
       token

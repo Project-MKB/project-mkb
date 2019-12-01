@@ -4,6 +4,7 @@ const User = require("../models/user.model");
 const fbAuth = require("../util/fbAuth");
 const { validateRecipeData } = require("../util/validators");
 const mongoose = require("mongoose");
+const admin = require("firebase-admin");
 
 // add recipe
 router.post("/add", fbAuth, async (req, res) => {
@@ -177,6 +178,61 @@ router.post("/clone/:id", fbAuth, async (req, res) => {
     console.error(error);
     return res.status(500).json({ error });
   }
+});
+
+// upload recipe image (main image)
+router.post("/uploadImage/:id", fbAuth, (req, res) => {
+  const Busboy = require("busboy");
+  const os = require("os");
+  const path = require("path");
+  const uuidv1 = require("uuid/v1");
+  const fs = require("fs");
+  const busboy = new Busboy({ headers: req.headers });
+
+  let imageToBeUploaded = {};
+  let imageFileName;
+
+  busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
+    if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
+      return res.status(400).json({
+        error: {
+          code: "file-type-error",
+          message: "Wrong file type submitted"
+        }
+      });
+    }
+
+    imageFileName = `${Date.now()}_${filename}`;
+    const filepath = path.join(os.tmpdir(), imageFileName);
+    imageToBeUploaded = { filepath, mimetype };
+    file.pipe(fs.createWriteStream(filepath));
+
+    file.on("data", function(data) {});
+    file.on("end", function() {});
+  });
+
+  busboy.on("finish", async () => {
+    await admin
+      .storage()
+      .bucket()
+      .upload(imageToBeUploaded.filepath, {
+        resumable: false,
+        metadata: {
+          metadata: {
+            contentType: imageToBeUploaded.mimetype
+          }
+        }
+      });
+    const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.STORAGE_BUCKET}/o/${imageFileName}?alt=media`;
+    await Recipe.findByIdAndUpdate(
+      req.params.id,
+      { mainImage: imageUrl },
+      { useFindAndModify: false }
+    );
+    return res.status(200).json({ message: "Image uploaded successfully " });
+  });
+
+  req.pipe(busboy);
 });
 
 // get list of recipes that matches userPref
