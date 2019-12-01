@@ -1,34 +1,3 @@
-<<<<<<< HEAD
-const router = require('express').Router();
-const User = require('../models/user.model');
-const firebase = require('../util/fbConfig')
-const { validateSignupData, validateSigninData } = require('../util/validators')
-const fbAdmin = require('../util/fbAdminConfig')
-const fbAuth = require('../util/fbAuth')
-
-
-
-router.route('/').get((req, res) => {
-  res.status(200).json("test response")
-});
-
-
-
-
-
-router.post('/signup', async (req, res) => {
-  // get data from client
-  let newUser = {
-    email: req.body.email,
-    password: req.body.password,
-    confirmPassword: req.body.confirmPassword
-  }
-
-  // validate data
-  const { error, valid } = validateSignupData(newUser)
-  if (!valid) {
-    return res.status(400).json({ error })
-=======
 const router = require("express").Router();
 const User = require("../models/user.model");
 const firebase = require("../util/fbConfig");
@@ -62,7 +31,6 @@ router.post("/signup", async (req, res) => {
   const { error, valid } = validateSignupData(newUser);
   if (!valid) {
     return res.status(400).json({ error });
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
   }
 
   // signup logic

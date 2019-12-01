@@ -1,14 +1,9 @@
-<<<<<<< HEAD
-const router = require('express').Router();
-const Recipe = require('../models/recipe.model');
-=======
 const router = require("express").Router();
 const Recipe = require("../models/recipe.model");
 const User = require("../models/user.model");
 const fbAuth = require("../util/fbAuth");
 const { validateRecipeData } = require("../util/validators");
 const mongoose = require("mongoose");
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
 
 // add recipe
 router.post("/add", fbAuth, async (req, res) => {
