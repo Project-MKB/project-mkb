@@ -1,6 +1,6 @@
 // Check why the component is re-rendered
 // and print what have been changed per each rerender
-export default (prevProps, prevState, props, state) => {
+const checkWhyRerender = (prevProps, prevState, props, state) => {
   Object.entries(props).forEach(
     ([key, val]) =>
       prevProps[key] !== val &&
@@ -22,3 +22,5 @@ export default (prevProps, prevState, props, state) => {
     );
   }
 };
+
+export default checkWhyRerender;

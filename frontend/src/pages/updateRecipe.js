@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import Badge from "../components/global/Badge";
 import LoadingButton from "../components/global/LoadingButton";
 import { connect } from "react-redux";
-import { createRecipe } from "../redux/actions/recipeActions";
+import { getRecipe, updateRecipe } from "../redux/actions/recipeActions";
 
-export class CreateRecipe extends Component {
+export class UpdateRecipe extends Component {
   state = {
     title: "",
     ingredient: "",
@@ -22,6 +22,41 @@ export class CreateRecipe extends Component {
     tags: []
   };
 
+  updateStateFromProps = recipe => {
+    this.setState({
+      title: recipe.title || "",
+      ingredients: recipe.ingredients || [],
+      directions: recipe.directions || [],
+      prepTime: recipe.prepTime || 0,
+      cookTime: recipe.cookTime || 0,
+      servingSize: recipe.servingSize || 0,
+      category: recipe.category || "",
+      cuisine: recipe.cuisine || "",
+      difficulty: recipe.difficulty || 0,
+      mainImage: recipe.mainImage || "",
+      tags: recipe.tags || []
+    });
+  };
+
+  componentDidMount() {
+    // need to fetch recipe with id
+    /* 
+      - call action to get recipe
+      - dispatch action to reducer to update global recipe state
+      - this component subscribe recipe
+      - componentDidUpdate receive recipe and update local state
+      - input fields are filled
+    */
+    this.props.getRecipe(this.props.match.params.id);
+    this.updateStateFromProps(this.props.recipe);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.recipe.isLoading !== prevProps.recipe.isLoading) {
+      this.updateStateFromProps(this.props.recipe);
+    }
+  }
+
   handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
@@ -37,7 +72,8 @@ export class CreateRecipe extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.createRecipe(
+    this.props.updateRecipe(
+      this.props.match.params.id,
       this.state,
       this.state.mainImage,
       this.props.history
@@ -231,6 +267,15 @@ export class CreateRecipe extends Component {
 
               <div className="form-group">
                 <label htmlFor="mainImage">Image</label>
+                {recipe.mainImage && (
+                  <div>
+                    <img
+                      src={recipe.mainImage}
+                      alt="recipe"
+                      className="img-thumbnail"
+                    />
+                  </div>
+                )}
                 <div>
                   <input
                     type="file"
@@ -286,7 +331,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  createRecipe
+  getRecipe,
+  updateRecipe
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateRecipe);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateRecipe);

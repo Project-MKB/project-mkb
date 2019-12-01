@@ -93,16 +93,6 @@ exports.validateRecipeData = recipe => {
     error.message = "Difficulty must not be empty.";
   }
 
-  if (recipe.mainImage.trim() === "") {
-    error.code = "recipe/empty-mainImage";
-    error.message = "Please add main image.";
-  }
-
-  if (recipe.tags.length === 0) {
-    error.code = "recipe/empty-tags";
-    error.message = "Recipe need at least one tag.";
-  }
-
   return {
     error,
     valid: Object.keys(error).length === 0 ? true : false

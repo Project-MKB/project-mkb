@@ -4,6 +4,7 @@ const User = require("../models/user.model");
 const fbAuth = require("../util/fbAuth");
 const { validateRecipeData } = require("../util/validators");
 const mongoose = require("mongoose");
+const admin = require("firebase-admin");
 
 // add recipe
 router.post("/add", fbAuth, async (req, res) => {
@@ -19,7 +20,7 @@ router.post("/add", fbAuth, async (req, res) => {
     ...newRecipe,
     rating: 0,
     uid: req.user.uid,
-    totalTime: newRecipe.prepTime + newRecipe.cookTime
+    totalTime: parseInt(newRecipe.prepTime) + parseInt(newRecipe.cookTime)
   });
 
   try {
@@ -92,25 +93,38 @@ router.post("/update/:id", fbAuth, async (req, res) => {
     return res.status(400).json({ error });
   }
 
+  /* 
+    - check if the user's uid is equal to the recipe's uid
+    - if equal
+      - update the recipe without cloning
+    - else
+      - clone the recipe and update the cloned recipe
+        - call clone api
+        - get response with the cloned recipe (DR - Duplicated Recipe)
+        - get id from the DR
+        - update the DR
+  */
+
   try {
     const recipe = await Recipe.findById(req.params.id);
 
-    // if recipe's uid doesn't match current user uid, return error
+    // if recipe's uid doesn't match current user uid,
+    // clone the recipe and proceed to update
+    let clonedRecipe;
     if (recipe.uid !== req.user.uid) {
-      return res.status(403).json({
-        error: {
-          code: "auth/unauthorized",
-          message:
-            "You cannot update other people's recipes. Please clone the recipe first and update."
-        }
-      });
+      // cloning
+      clonedRecipe = await Recipe.findById(recipe._id);
+      clonedRecipe._id = mongoose.Types.ObjectId();
+      clonedRecipe.isNew = true;
+      clonedRecipe.uid = req.user.uid;
+      await clonedRecipe.save();
     }
 
     const updatedRecipe = await Recipe.findByIdAndUpdate(
-      req.params.id,
+      clonedRecipe ? clonedRecipe._id : req.params.id,
       {
         ...newRecipe,
-        totalTime: newRecipe.prepTime + newRecipe.cookTime
+        totalTime: parseInt(newRecipe.prepTime) + parseInt(newRecipe.cookTime)
       },
       {
         new: true,
@@ -164,6 +178,61 @@ router.post("/clone/:id", fbAuth, async (req, res) => {
     console.error(error);
     return res.status(500).json({ error });
   }
+});
+
+// upload recipe image (main image)
+router.post("/uploadImage/:id", fbAuth, (req, res) => {
+  const Busboy = require("busboy");
+  const os = require("os");
+  const path = require("path");
+  const uuidv1 = require("uuid/v1");
+  const fs = require("fs");
+  const busboy = new Busboy({ headers: req.headers });
+
+  let imageToBeUploaded = {};
+  let imageFileName;
+
+  busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
+    if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
+      return res.status(400).json({
+        error: {
+          code: "file-type-error",
+          message: "Wrong file type submitted"
+        }
+      });
+    }
+
+    imageFileName = `${Date.now()}_${filename}`;
+    const filepath = path.join(os.tmpdir(), imageFileName);
+    imageToBeUploaded = { filepath, mimetype };
+    file.pipe(fs.createWriteStream(filepath));
+
+    file.on("data", function(data) {});
+    file.on("end", function() {});
+  });
+
+  busboy.on("finish", async () => {
+    await admin
+      .storage()
+      .bucket()
+      .upload(imageToBeUploaded.filepath, {
+        resumable: false,
+        metadata: {
+          metadata: {
+            contentType: imageToBeUploaded.mimetype
+          }
+        }
+      });
+    const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.STORAGE_BUCKET}/o/${imageFileName}?alt=media`;
+    await Recipe.findByIdAndUpdate(
+      req.params.id,
+      { mainImage: imageUrl },
+      { useFindAndModify: false }
+    );
+    return res.status(200).json({ message: "Image uploaded successfully " });
+  });
+
+  req.pipe(busboy);
 });
 
 // get list of recipes that matches userPref

@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import axios from "axios";
 
+// components
+import AuthenticatedRoute from "./components/main/AuthenticatedRoute";
+import UnauthenticatedRoute from "./components/main/UnauthenticatedRoute";
+
+// pages
 import Landing from "./pages/landing";
 import Register from "./pages/register";
 import Login from "./pages/login";
@@ -9,14 +15,14 @@ import Main from "./pages/main";
 import Details from "./pages/details";
 import PageNotFound from "./pages/404";
 import CreateRecipe from "./pages/createRecipe";
+import UpdateRecipe from "./pages/updateRecipe";
 import UpdateUser from "./pages/updateUser";
+
+// redux
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import jwtDecode from "jwt-decode";
 import { signoutUser, getUser } from "./redux/actions/userActions";
-import axios from "axios";
-import AuthenticatedRoute from "./components/main/AuthenticatedRoute";
-import UnauthenticatedRoute from "./components/main/UnauthenticatedRoute";
 
 // see if user is logged in when app is first launched
 // or when browser is refreshed by checking the token stored in localStorage
@@ -48,11 +54,16 @@ class App extends Component {
             <UnauthenticatedRoute exact path="/login" component={Login} />
             <Route exact path="/onboarding" component={InitialPref} />
             <AuthenticatedRoute exact path="/main" component={Main} />
-            <AuthenticatedRoute exact path="/details" component={Details} />
+            <AuthenticatedRoute exact path="/details/:id" component={Details} />
             <AuthenticatedRoute
               exact
               path="/recipe/create"
               component={CreateRecipe}
+            />
+            <AuthenticatedRoute
+              exact
+              path="/recipe/update/:id"
+              component={UpdateRecipe}
             />
             <AuthenticatedRoute
               exact
