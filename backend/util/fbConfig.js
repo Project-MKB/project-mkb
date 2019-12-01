@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-const firebase = require('firebase')
-=======
 const firebase = require("firebase");
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
 
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
@@ -15,12 +11,6 @@ const firebaseConfig = {
   measurementId: process.env.MEASUREMENT_ID
 };
 
-<<<<<<< HEAD
-firebase.initializeApp(firebaseConfig)
-
-module.exports = firebase
-=======
 firebase.initializeApp(firebaseConfig);
 
 module.exports = firebase;
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405

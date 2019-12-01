@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-const validator = require('validator')
-
-exports.validateSignupData = newUser => {
-  const error = {}
-  if (validator.isEmpty(newUser.email)) {
-    error.code = "auth/empty-email"
-    error.message = "Email must not be empty."
-  } else if (!validator.isEmail(newUser.email)) {
-    error.code = "auth/invalid-email"
-    error.message = "The email address is badly formatted."
-  }
-  if (validator.isEmpty(newUser.password)) {
-    error.code = "auth/empty-password"
-    error.message = "Password must not be empty."
-  } else if (validator.isEmpty(newUser.confirmPassword)) {
-    error.code = "auth/empty-confirmPassword"
-    error.message = "Confirm Password must not be empty"
-  } else if (newUser.password !== newUser.confirmPassword) {
-    error.code = "auth/password-not-match"
-    error.message = "Password must match"
-=======
 const validator = require("validator");
 
 exports.validateSignupData = newUser => {
@@ -40,31 +18,11 @@ exports.validateSignupData = newUser => {
   } else if (newUser.password !== newUser.confirmPassword) {
     error.code = "auth/password-not-match";
     error.message = "Password must match";
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
   }
 
   return {
     error,
     valid: Object.keys(error).length === 0 ? true : false
-<<<<<<< HEAD
-  }
-}
-
-
-
-exports.validateSigninData = user => {
-  const error = {}
-  if (validator.isEmpty(user.email)) {
-    error.code = "auth/empty-email"
-    error.message = "Email must not be empty."
-  } else if (!validator.isEmail(user.email)) {
-    error.code = "auth/invalid-email"
-    error.message = "The email address is badly formatted."
-  }
-  if (validator.isEmpty(user.password)) {
-    error.code = "auth/empty-password"
-    error.message = "Password must not be empty."
-=======
   };
 };
 
@@ -80,16 +38,11 @@ exports.validateSigninData = user => {
   if (validator.isEmpty(user.password)) {
     error.code = "auth/empty-password";
     error.message = "Password must not be empty.";
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
   }
 
   return {
     error,
     valid: Object.keys(error).length === 0 ? true : false
-<<<<<<< HEAD
-  }
-}
-=======
   };
 };
 
@@ -155,4 +108,3 @@ exports.validateRecipeData = recipe => {
     valid: Object.keys(error).length === 0 ? true : false
   };
 };
->>>>>>> d9de86131d647a15328486f455ebdd17fa0fb405
