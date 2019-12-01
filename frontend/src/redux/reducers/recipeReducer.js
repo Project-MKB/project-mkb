@@ -11,6 +11,7 @@ export default (state = initialState, action) => {
       };
     case "RECIPE_GET_SUCCESS":
       return {
+        ...state,
         isLoading: false,
         ...action.payload
       };
@@ -43,6 +44,7 @@ export default (state = initialState, action) => {
       };
     case "RECIPE_UPDATE_SUCCESS":
       return {
+        ...state,
         isLoading: false,
         ...action.payload
       };
