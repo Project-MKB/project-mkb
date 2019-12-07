@@ -5,25 +5,25 @@ import Hero from "../components/global/Hero";
 import RecipesListing from "../components/global/RecipesListing";
 import Footer from "../components/global/Footer";
 import { Link } from "react-router-dom";
+// redux
+import { connect } from "react-redux";
+import { listRecipe } from "../redux/actions/recipeActions";
 
-let recipes = [
-  {
-    "title": "Baked Cheese Manicotti"
-  },
-  {
-    "title": "Best Baked Macaroni and Cheese"
+class Main extends React.Component {
+  componentDidMount() {
+    this.props.listRecipe();
   }
-]
 
-class Main extends Component {
-  render(){
+  render() {
+    const recipes = this.props.recipe;
+    console.log(recipes);
+
     return (
       <div>
-        <Nav />
         <SearchBar />
         <div className="container-fluid">
           <div className="row">
-            <div className="col-12">
+            <div className="col-md-12">
               <Hero
                 title="A selection of popular recipes!"
                 content="This is a modified jumbotron that occupies the entire horizontal space of its parent."
@@ -32,7 +32,6 @@ class Main extends Component {
               <Link to={"/recipe/create"}>
                 <button className="btn btn-success">Create Recipe</button>
               </Link>
-              {/* loop recipe */}
               <RecipesListing />
             </div>
           </div>
@@ -41,6 +40,14 @@ class Main extends Component {
       </div>
     );
   }
+}
+
+const mapStateToProps = state => ({
+  recipe: state.recipe
+});
+
+const mapDispatchToProps = {
+  listRecipe
 };
 
-export default Main;
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
