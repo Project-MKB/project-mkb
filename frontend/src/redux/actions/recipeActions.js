@@ -22,6 +22,28 @@ export const getRecipe = id => async dispatch => {
   }
 };
 
+// list recipe action
+export const listRecipe = () => async dispatch => {
+  dispatch({ type: "RECIPE_LIST_REQUEST" });
+
+  try {
+    // call list recipe api
+    const res = await axios.get(`http://localhost:5000/recipes/list`);
+
+    dispatch({
+      type: "RECIPE_LIST_SUCCESS",
+      payload: res.data
+    });
+  } catch (e) {
+    const error = e.response.data.error;
+    console.log(error);
+    dispatch({
+      type: "RECIPE_LIST_FAILURE",
+      payload: error
+    });
+  }
+};
+
 // create recipe action
 export const createRecipe = (newRecipe, image, history) => async dispatch => {
   dispatch({ type: "RECIPE_CREATE_REQUEST" });
