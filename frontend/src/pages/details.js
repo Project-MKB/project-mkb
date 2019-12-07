@@ -10,15 +10,11 @@ import Footer from "../components/global/Footer";
 // redux
 import { connect } from "react-redux";
 import { getRecipe } from "../redux/actions/recipeActions";
-// import checkWhyRerender from "../util/checkWhyRerender";
 
 class Details extends React.Component {
   componentDidMount() {
     this.props.getRecipe(this.props.match.params.id);
   }
-  // componentDidUpdate(prevProps, prevState) {
-  //   checkWhyRerender(prevProps, prevState, this.props, null);
-  // }
 
   render() {
     const { recipe } = this.props;

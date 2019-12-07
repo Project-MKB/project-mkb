@@ -21,6 +21,23 @@ export default (state = initialState, action) => {
         error: action.payload
       };
 
+    case "RECIPE_LIST_REQUEST":
+      return {
+        ...state,
+        isLoading: true
+      };
+    case "RECIPE_LIST_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        ...action.payload
+      };
+    case "RECIPE_LIST_FAILURE":
+      return {
+        isLoading: false,
+        error: action.payload
+      };
+
     case "RECIPE_CREATE_REQUEST":
       return {
         ...state,
