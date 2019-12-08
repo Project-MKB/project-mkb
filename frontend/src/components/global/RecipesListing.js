@@ -5,15 +5,14 @@ class RecipesListing extends Component {
     
     render(){
         const recipes = this.props.recipes
+        console.log(recipes)
         return(
             <div className="album py-5 bg-light">
                 <div className="container">
                     <div className="row">
-                        {/* loop recipes array and call <Recipe /> */}
-                            {this.props.recipes.map((reciepe) => {
-                                return <Recipe recipes={reciepe} />
-                            })
-                        }
+                       {recipes.map((recipe) => {
+                           return <Recipe key={recipe._id} recipe={recipe} />
+                       })}
                     </div>
                 </div>
             </div>

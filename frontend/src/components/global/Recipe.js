@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Recipe extends Component {
     
     render(){
-        const Recipe = this.props.recipes
+        const { title, mainImage, _id } = this.props.recipe
         return(
             <div className="col-md-4">
                 <div className="card mb-4 shadow-sm">
-                    <svg className="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><rect width="100%" height="100%" fill="#55595c"></rect></svg>
+                    <img src={mainImage} alt={title} />
                     <div className="card-body">
-                    <h3>{this.props.recipe.title}</h3>
+                    <Link to={`/details/${_id}`}>
+                        <h3>{title}</h3>
+                    </Link>
                     </div>
                 </div>
             </div>

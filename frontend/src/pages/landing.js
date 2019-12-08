@@ -8,13 +8,13 @@ import Footer from "../components/global/Footer";
 
 const Landing = () => {
   return (
-    <div>
+    <React.Fragment>
       <Nav />
       <Header />
       <About />
       <Features />
       <Footer />
-    </div>
+    </React.Fragment>
   );
 };
 

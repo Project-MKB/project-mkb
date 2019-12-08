@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import Nav from "../components/global/Nav";
-import SearchBar from "../components/global/SearchBar";
 import Hero from "../components/global/Hero";
 import RecipesListing from "../components/global/RecipesListing";
 import Footer from "../components/global/Footer";
@@ -9,7 +8,9 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { listRecipe } from "../redux/actions/recipeActions";
 
+
 class Main extends React.Component {
+
   componentDidMount() {
     this.props.listRecipe();
   }
@@ -17,10 +18,13 @@ class Main extends React.Component {
   render() {
     const recipes = this.props.recipe;
     console.log(recipes);
+    if (recipes.isLoading) {
+      return null
+    }
 
     return (
       <div>
-        <SearchBar />
+        <Nav />
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-12">
@@ -32,7 +36,7 @@ class Main extends React.Component {
               <Link to={"/recipe/create"}>
                 <button className="btn btn-success">Create Recipe</button>
               </Link>
-              <RecipesListing />
+              <RecipesListing recipes={recipes.recipes}/>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 const initialState = {
-  isLoading: false
+  isLoading: true
 };
 
 export default (state = initialState, action) => {
@@ -30,7 +30,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        ...action.payload
+        recipes: action.payload
       };
     case "RECIPE_LIST_FAILURE":
       return {
