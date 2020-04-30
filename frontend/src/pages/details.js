@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // components
-import Nav2 from "../components/global/Nav2";
-import SearchBar from "../components/global/SearchBar";
+import Nav from "../components/global/Nav";
 import Hero from "../components/global/Hero";
-import Gallery from "../components/details/Gallery";
+import RecipeIntroduction from "../components/details/RecipeIntroduction";
 import RecipeInstructions from "../components/details/RecipeInstructions";
 import Footer from "../components/global/Footer";
 // redux
 import { connect } from "react-redux";
 import { getRecipe } from "../redux/actions/recipeActions";
+import '../styles/details.scss';
 
 class Details extends React.Component {
   componentDidMount() {
@@ -21,26 +21,22 @@ class Details extends React.Component {
     console.log(recipe);
 
     return (
-      <div>
-        <SearchBar />
+      <div id="detailsPage">
+        <Nav />
         <div className="container-fluid">
           <div className="row">
-            <div className="col-md-11">
+            <div className="col-12">
               <Hero
-                title="Recipes"
-                content="This is a modified jumbotron that occupies the entire horizontal space of its parent."
+                title={recipe.title}
+                className="heroBanner"
               />
 
               {/* When pressing edit icon, it redirects to recipe update form page with the recipe id */}
               <Link to={`/recipe/update/${recipe._id}`}>
                 <button className="btn btn-success">Update Recipe</button>
               </Link>
-
-              <Gallery />
-              <RecipeInstructions />
-            </div>
-            <div className="col-md-1">
-              <Nav2 />
+              <RecipeIntroduction recipe={recipe} />
+              <RecipeInstructions recipe={recipe} />
             </div>
           </div>
         </div>

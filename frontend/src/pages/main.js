@@ -1,13 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
+// components
 import Nav from "../components/global/Nav";
 import Hero from "../components/global/Hero";
+import SearchBar from '../components/global/SearchBar';
 import RecipesListing from "../components/global/RecipesListing";
 import Footer from "../components/global/Footer";
-import { Link } from "react-router-dom";
 // redux
 import { connect } from "react-redux";
 import { listRecipe } from "../redux/actions/recipeActions";
-
+import '../styles/main.scss'
 
 class Main extends React.Component {
 
@@ -23,7 +25,7 @@ class Main extends React.Component {
     }
 
     return (
-      <div>
+      <div id="mainPage">
         <Nav />
         <div className="container-fluid">
           <div className="row">
@@ -32,6 +34,7 @@ class Main extends React.Component {
                 title="A selection of popular recipes!"
                 content="This is a modified jumbotron that occupies the entire horizontal space of its parent."
               />
+              <SearchBar />
               {/* When pressing edit icon, it redirects to recipe update form page with the recipe id */}
               <Link to={"/recipe/create"}>
                 <button className="btn btn-success">Create Recipe</button>
