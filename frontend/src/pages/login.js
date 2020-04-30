@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Nav from "../components/global/Footer";
 import { connect } from "react-redux";
 import { loginUser } from "../redux/actions/userActions";
 
@@ -35,12 +34,12 @@ class Login extends Component {
 
     return (
       <div id="container">
-        <div className="row justify-content-center">
+        <div className="row">
           <div className="col-12 col-md-4">
             <h2>Welcome Back</h2>
           </div>
         </div>
-        <div className="row justify-content-center">
+        <div className="row">
           <div className="col-12 col-md-4">
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
@@ -88,7 +87,6 @@ class Login extends Component {
             </form>
           </div>
         </div>
-        <Nav />
       </div>
     );
   }

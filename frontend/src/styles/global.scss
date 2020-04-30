@@ -1,10 +1,13 @@
 // General
+h2 {font-size: 2.75em}
 body {
     color: $dkgray;
+    background-image: url(../images/rockywall.png);
 }
+
 .btn-primary {
-    background-color: $dkgreen;
-    border-color: $dkgreen;
+    background-color: $turquoise;
+    border-color: $turquoise;
 
     &:hover {
         background-color: $mdgreen;
@@ -12,8 +15,8 @@ body {
     }
 }
 .btn-outline-primary {
-    border-color: $dkgreen;
-    color: $dkgreen;
+    border-color: $turquoise;
+    color: $turquoise;
 
     &:hover {
         background-color: $mdgreen;
@@ -24,14 +27,16 @@ body {
 
 // GLOBAL COMPONENTS
 // Navigation 1
-
-// Navigation 2
+.navbar { background-color: $dkgray; }
+.navbar a {
+    color: $white;
+}
 
 // CTA
 
 // Footer
 footer {
-    background-color: $dkgreen;
+    background-color: $dkgray;
     padding: 30px 0 20px;
     color: $offwhite;
 

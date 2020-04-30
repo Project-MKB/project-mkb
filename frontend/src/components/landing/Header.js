@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Hero from '../global/Hero';
+
 
 const Header = () => {
     return(
-        <div className="container-fluid">
-            <div className="jumbotron jumbotron-fluid">
-                <div className="container">
-                    <h1 className="display-4">Project MKB</h1>
-                    <p className="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+        <div id="header">
+            <Hero 
+                title="Project MKB"
+                content="This is a modified jumbotron that occupies the entire horizontal space of its parent."
+            />
+            <div className="container hero-button">
+                <div className="row col-12">
                     <Link to="/register">
                         <button type="button" className="btn btn-primary btn-lg">Register</button>
                     </Link>
@@ -16,7 +20,7 @@ const Header = () => {
                     </Link>
                 </div>
             </div>
-         </div>
+        </div>
     );
 }
 
